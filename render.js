@@ -15,8 +15,7 @@ const RENDERED_FILES_DIR = path.join(__dirname, 'rendered');
 fs.ensureDirSync(RENDERED_FILES_DIR);
 fs.emptyDirSync(RENDERED_FILES_DIR);
 
-let staticFiles = klawSync(STATIC_FILES_DIR);
-staticFiles.forEach(({ path: filePath, stats }) => {
+klawSync(STATIC_FILES_DIR).forEach(({ path: filePath, stats }) => {
   let relativePath = path.relative(STATIC_FILES_DIR, filePath);
   let pathInRendered = path.join(RENDERED_FILES_DIR, relativePath);
   if (stats.isDirectory()) {
@@ -74,9 +73,33 @@ env.addFilter('format', function format(formatStr, ...args) {
   return sprintf.vsprintf(formatStr, args);
 });
 
-let renderedHtml = env.render('timetable.njk', {
-  lessonColors,
-  lessonTimes,
-  lessons,
-});
-fs.writeFileSync(path.join(RENDERED_FILES_DIR, 'index.html'), renderedHtml);
+const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
+function renderLessonFilesDir(dirPath) {
+  let relativeDirPath = path.relative(LESSON_DATA_FILES_DIR, dirPath);
+  fs.ensureDirSync(path.join(RENDERED_FILES_DIR, relativeDirPath));
+
+  let contents = fs.readdirSync(dirPath).map(name => {
+    let fullPath = path.join(dirPath, name);
+    let isDir = fs.statSync(fullPath).isDirectory();
+    if (isDir) renderLessonFilesDir(fullPath);
+    return { name, isDir };
+  });
+
+  let indexHtml = env.render('directory-index.njk', {
+    relativeRoot: path.relative(relativeDirPath, '.') || '.',
+    relativeDirPath,
+    contents,
+  });
+  fs.writeFileSync(
+    path.join(RENDERED_FILES_DIR, relativeDirPath, 'index.html'),
+    indexHtml,
+  );
+}
+renderLessonFilesDir(LESSON_DATA_FILES_DIR);
+
+// let renderedHtml = env.render('timetable.njk', {
+//   lessonColors,
+//   lessonTimes,
+//   lessons,
+// });
+// fs.writeFileSync(path.join(RENDERED_FILES_DIR, 'index.html'), renderedHtml);

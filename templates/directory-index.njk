@@ -1,0 +1,15 @@
+{% extends "layout.njk" %}
+
+{% block title %}school-timetable/{{ relativeDirPath }}{% endblock %}
+
+{% block body %}
+
+<ul>
+  {% for item in contents %}
+    <li>
+      <a href="./{{ item.name }}">{{ item.name + ("/" if item.isDir else "") }}</a>
+    </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
