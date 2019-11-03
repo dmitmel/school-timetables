@@ -1,13 +1,31 @@
 {% extends "layout.njk" %}
 
-{% block title %}school-timetable/{{ relativeDirPath }}{% endblock %}
+{% block title %}school-timetable/{{ dirNames | join('/') }}{% endblock %}
 
 {% block body %}
 
+  <h1>
+    Папка
+    {% for dirName in ['~'].concat(dirNames) %}
+      {% if loop.last %}
+        {{ dirName }}
+      {% else %}
+        {% set link = '..' %}
+        {% for i in range(loop.length - loop.index0 - 2) %}
+          {% set link = link + '/..' %}
+        {% endfor %}
+        <a href="{{ link }}">{{ dirName }}</a> /
+      {% endif %}
+    {% endfor %}
+  </h1>
+
 <ul>
+  <li>
+    <a href="../">../</a>
+  </li>
   {% for item in contents %}
     <li>
-      <a href="./{{ item.name }}">{{ item.name + ("/" if item.isDir else "") }}</a>
+      <a href="./{{ item.name }}">{{ item.name + ('/' if item.isDir else '') }}</a>
     </li>
   {% endfor %}
 </ul>

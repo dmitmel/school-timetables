@@ -74,20 +74,20 @@ env.addFilter('format', function format(formatStr, ...args) {
 });
 
 const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
-function renderLessonFilesDir(dirPath) {
+function renderLessonFilesDir(dirPath, dataDirNames) {
   let relativeDirPath = path.relative(LESSON_DATA_FILES_DIR, dirPath);
   fs.ensureDirSync(path.join(RENDERED_FILES_DIR, relativeDirPath));
 
   let contents = fs.readdirSync(dirPath).map(name => {
     let fullPath = path.join(dirPath, name);
     let isDir = fs.statSync(fullPath).isDirectory();
-    if (isDir) renderLessonFilesDir(fullPath);
+    if (isDir) renderLessonFilesDir(fullPath, [...dataDirNames, name]);
     return { name, isDir };
   });
 
   let indexHtml = env.render('directory-index.njk', {
     relativeRoot: path.relative(relativeDirPath, '.') || '.',
-    relativeDirPath,
+    dirNames: dataDirNames,
     contents,
   });
   fs.writeFileSync(
@@ -95,7 +95,7 @@ function renderLessonFilesDir(dirPath) {
     indexHtml,
   );
 }
-renderLessonFilesDir(LESSON_DATA_FILES_DIR);
+renderLessonFilesDir(LESSON_DATA_FILES_DIR, []);
 
 // let renderedHtml = env.render('timetable.njk', {
 //   lessonColors,
