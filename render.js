@@ -55,16 +55,6 @@ Object.keys(lessonColors).forEach(lessonName => {
 let lessonTimes = fs.readJsonSync(
   path.join(DATA_FILES_DIR, 'lesson-times', 'Basis.json'),
 );
-let lessons = fs.readJsonSync(
-  path.join(
-    DATA_FILES_DIR,
-    'lessons',
-    'Basis',
-    '2019-2020',
-    'I семестр',
-    '9-A.json',
-  ),
-);
 
 let env = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(TEMPLATES_DIR),
@@ -74,19 +64,40 @@ env.addFilter('format', function format(formatStr, ...args) {
 });
 
 const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
+
 function renderLessonFilesDir(dirPath, dataDirNames) {
   let relativeDirPath = path.relative(LESSON_DATA_FILES_DIR, dirPath);
+  let templateRelativeRoot = path.relative(relativeDirPath, '.') || '.';
   fs.ensureDirSync(path.join(RENDERED_FILES_DIR, relativeDirPath));
 
-  let contents = fs.readdirSync(dirPath).map(name => {
+  let contents = [];
+  fs.readdirSync(dirPath).forEach(name => {
     let fullPath = path.join(dirPath, name);
-    let isDir = fs.statSync(fullPath).isDirectory();
-    if (isDir) renderLessonFilesDir(fullPath, [...dataDirNames, name]);
-    return { name, isDir };
+    if (fs.statSync(fullPath).isDirectory()) {
+      renderLessonFilesDir(fullPath, [...dataDirNames, name]);
+      contents.push({ name, isDir: true });
+    } else {
+      let extName = path.extname(name);
+      if (extName === '.json') {
+        let baseName = path.basename(name, extName);
+        let lessons = fs.readJsonSync(fullPath);
+        let timetableHtml = env.render('timetable.njk', {
+          relativeRoot: templateRelativeRoot,
+          lessonColors,
+          lessonTimes,
+          lessons,
+        });
+        fs.writeFileSync(
+          path.join(RENDERED_FILES_DIR, relativeDirPath, `${baseName}.html`),
+          timetableHtml,
+        );
+        contents.push({ name: baseName, isDir: false });
+      }
+    }
   });
 
   let indexHtml = env.render('directory-index.njk', {
-    relativeRoot: path.relative(relativeDirPath, '.') || '.',
+    relativeRoot: templateRelativeRoot,
     dirNames: dataDirNames,
     contents,
   });
@@ -95,11 +106,5 @@ function renderLessonFilesDir(dirPath, dataDirNames) {
     indexHtml,
   );
 }
-renderLessonFilesDir(LESSON_DATA_FILES_DIR, []);
 
-// let renderedHtml = env.render('timetable.njk', {
-//   lessonColors,
-//   lessonTimes,
-//   lessons,
-// });
-// fs.writeFileSync(path.join(RENDERED_FILES_DIR, 'index.html'), renderedHtml);
+renderLessonFilesDir(LESSON_DATA_FILES_DIR, []);

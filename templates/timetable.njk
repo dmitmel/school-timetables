@@ -2,6 +2,12 @@
 
 {% block title %}school-timetable{% endblock %}
 
+{% block head %}
+
+  <link rel="stylesheet" href="{{ relativeRoot }}/timetable.css">
+
+{% endblock %}
+
 {% block body %}
 
 {% set weekdays = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця"] %}
