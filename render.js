@@ -6,6 +6,7 @@ const nunjucks = require('nunjucks');
 const klawSync = require('klaw-sync');
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
+const DATA_FILES_DIR = path.join(__dirname, 'data');
 const STATIC_FILES_DIR = path.join(__dirname, 'static');
 const RENDERED_FILES_DIR = path.join(__dirname, 'rendered');
 
@@ -23,8 +24,14 @@ staticFiles.forEach(({ path: filePath, stats }) => {
   }
 });
 
+let lessonTimes = fs.readJsonSync(
+  path.join(DATA_FILES_DIR, 'lesson-times', 'Basis.json'),
+);
+
 let env = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(TEMPLATES_DIR),
 );
-let renderedHtml = env.render('timetable.njk');
+let renderedHtml = env.render('timetable.njk', {
+  lessonTimes,
+});
 fs.writeFileSync(path.join(RENDERED_FILES_DIR, 'index.html'), renderedHtml);
