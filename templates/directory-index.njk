@@ -17,33 +17,43 @@
 
 {% endblock %}
 
+
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <main>
 
-  <h2 id="current-dir">
-    <a href="{{ relativeRoot }}" class="dir-name"><i class="fa fa-home"></i></a>
-    {% for dirName in dirNames %}
-      {% if not loop.last %}
-        <a href="{{ '..' + '/..'.repeat(loop.revindex0 - 1) }}" class="dir-name">{{ dirName }}</a>
-      {% else %}
-        <span class="dir-name">{{ dirName }}</span>
+    <h1>{{ title }}</h1>
+
+    <h2 id="current-dir">
+      <a href="{{ relativeRoot }}" class="dir-name"><i class="fa fa-home"></i></a>
+      {% for dirName in dirNames %}
+        {% if not loop.last %}
+          <a href="{{ '..' + '/..'.repeat(loop.revindex0 - 1) }}" class="dir-name">{{ dirName }}</a>
+        {% else %}
+          <span class="dir-name">{{ dirName }}</span>
+        {% endif %}
+      {% endfor %}
+    </h2>
+
+    <ul class="fa-ul">
+      {% if dirNames|length %}
+        <li>
+          <a href="../">
+            <i class="fa fa-li fa-level-up"></i>
+            &lt;папка вище&gt;
+          </a>
+        </li>
       {% endif %}
-    {% endfor %}
-  </h2>
+      {% for item in contents %}
+        <li>
+          <a href="./{{ item.name }}">
+            <i class="fa fa-li fa-{{ 'folder' if item.isDir else 'file-text' }}-o"></i>
+            {{ item.name }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
 
-  <ul>
-    <li>
-      <a href="../"><i class="fa fa-level-up"></i></a>
-    </li>
-    {% for item in contents %}
-      <li>
-        <a href="./{{ item.name }}">
-          <i class="fa fa-{{ 'folder' if item.isDir else 'file-text' }}-o"></i>
-          {{ item.name }}
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
+  </main>
 
 {% endblock %}
