@@ -10,7 +10,7 @@ main {
 }
 
 #current-dir > div {
-  border: 0.1em solid black;
+  border: 3px solid black;
   overflow: hidden;
 }
 
@@ -39,7 +39,8 @@ main {
 }
 
 #contents li {
-  border: 0.1em solid black;
+  border: 1px solid black;
+  overflow: hidden;
 }
 
 #contents > li:not(:first-child) {
