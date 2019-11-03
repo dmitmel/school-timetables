@@ -6,7 +6,13 @@
     "eslint-config-dmitmel": "dmitmel/eslint-config-dmitmel",
     "eslint-plugin-node": "^10.0.0",
     "fs-extra": "^8.1.0",
+    "http-server": "^0.11.1",
     "klaw-sync": "^6.0.0",
     "nunjucks": "^3.2.0"
+  },
+  "scripts": {
+    "start": "http-server rendered",
+    "build": "node render.js",
+    "lint": "eslint --ignore-path .gitignore ."
   }
 }
