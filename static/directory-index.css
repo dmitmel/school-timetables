@@ -1,0 +1,35 @@
+#current-dir {
+  display: flex;
+  border-collapse: collapse;
+}
+
+#current-dir .dir-name {
+  border: 0.1em solid black;
+  padding: 0.2em;
+}
+
+#current-dir .dir-name:not(:last-child) {
+  border-right-style: none;
+}
+
+#current-dir .dir-name:hover ~ .dir-name,
+#current-dir .dir-name:focus ~ .dir-name {
+  border-left-style: none;
+  border-right-style: solid;
+}
+
+#current-dir .dir-name:focus,
+#current-dir .dir-name:hover {
+  border-color: red;
+  border-right-style: solid;
+}
+
+#current-dir .dir-name:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+#current-dir .dir-name:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}

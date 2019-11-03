@@ -1,0 +1,39 @@
+table {
+  margin: 1em auto;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: center;
+  color: black;
+}
+
+table,
+td,
+th {
+  border: 1px solid #212121;
+}
+
+td,
+th {
+  padding: 0.4em 0.8em;
+}
+
+thead,
+tfoot {
+  background-color: #484848;
+  color: #fff;
+}
+
+#title {
+  background-color: #212121;
+  font-size: 1.5em;
+}
+
+#copyright {
+  font-size: 0.8em;
+  text-align: right;
+}
+
+#copyright a {
+  color: #90caf9;
+  text-decoration: none;
+}

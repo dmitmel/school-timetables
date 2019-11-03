@@ -2,32 +2,32 @@
 
 {% block title %}school-timetable/{{ dirNames | join('/') }}{% endblock %}
 
+{% block head %}
+  <link rel="stylesheet" href="{{ relativeRoot }}/directory-index.css">
+{% endblock %}
+
 {% block body %}
 
-  <h1>
-    Папка
+  <h1 id="current-dir">
     {% for dirName in ['~'].concat(dirNames) %}
       {% if loop.last %}
-        {{ dirName }}
+        <span class="dir-name">{{ dirName }}</span>
       {% else %}
-        {% set link = '..' %}
-        {% for i in range(loop.length - loop.index0 - 2) %}
-          {% set link = link + '/..' %}
-        {% endfor %}
-        <a href="{{ link }}">{{ dirName }}</a> /
+        {% set link = '..' + '/..'.repeat(loop.length - loop.index0 - 2) %}
+        <a href="{{ link }}" class="dir-name">{{ dirName }}</a>
       {% endif %}
     {% endfor %}
   </h1>
 
-<ul>
-  <li>
-    <a href="../">../</a>
-  </li>
-  {% for item in contents %}
+  <ul>
     <li>
-      <a href="./{{ item.name }}">{{ item.name + ('/' if item.isDir else '') }}</a>
+      <a href="../">../</a>
     </li>
-  {% endfor %}
-</ul>
+    {% for item in contents %}
+      <li>
+        <a href="./{{ item.name }}">{{ item.name + ('/' if item.isDir else '') }}</a>
+      </li>
+    {% endfor %}
+  </ul>
 
 {% endblock %}
