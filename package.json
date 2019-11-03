@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-dmitmel": "dmitmel/eslint-config-dmitmel",
+    "eslint-plugin-node": "^10.0.0",
+    "fs-extra": "^8.1.0",
+    "klaw-sync": "^6.0.0",
+    "nunjucks": "^3.2.0"
+  }
+}
