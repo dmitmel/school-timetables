@@ -3,8 +3,10 @@
 {% block title %}school-timetable{% endblock %}
 
 {% block body %}
+
 {% set weekdays = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця"] %}
 <table>
+
   <thead>
     <tr>
       <th colspan="7" id="title">Розклад 2019-2020 І семестр 9-А клас</th>
@@ -17,6 +19,7 @@
       {% endfor %}
     </tr>
   </thead>
+
   <tbody>
     {% for time in lessonTimes %}
       {% set lessonIndex = loop.index0 %}
@@ -25,11 +28,14 @@
         <td>{{ lessonIndex + 1 }}</td>
         {% for weekday in weekdays %}
           {% set weekdayIndex = loop.index0 %}
-          <td>{{ lessons[weekdayIndex][lessonIndex] }}</td>
+          {% set lesson = lessons[weekdayIndex][lessonIndex] %}
+          {% set color = lessonColors[lesson] %}
+          <td style="background-color: {{ color.back }}; color: {{ color.fore }}">{{ lesson }}</td>
         {% endfor %}
       </tr>
     {% endfor %}
   </tbody>
+
   <tfoot>
     <tr>
       <td colspan="7" id="copyright">
@@ -38,94 +44,7 @@
       </td>
     </tr>
   </tfoot>
+
 </table>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="7" id="title">Розклад 2019-2020 І семестр 9-А клас</th>
-    </tr>
-    <tr>
-      <th>Дзвінки</th>
-      <th>Урок</th>
-      <th>Понеділок</th>
-      <th>Вівторок</th>
-      <th>Середа</th>
-      <th>Четвер</th>
-      <th>П'ятниця</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>09:00 - 09:45</td>
-      <td>1</td>
-      <td class="Informatics">Інформатика</td>
-      <td class="EnglishLanguage">Англійська мова</td>
-      <td rowspan="2" class="Chemistry">Хімія</td>
-      <td rowspan="2" class="Biology">Біологія</td>
-      <td class="EnglishLanguage">Англійська мова</td>
-    </tr>
-    <tr>
-      <td>10:00 - 10:45</td>
-      <td>2</td>
-      <td class="UkrainianLiterature">Українська література</td>
-      <td rowspan="2" class="Physics">Фізика (практика)</td>
-      <td class="UkrainianLiterature">Українська література</td>
-    </tr>
-    <tr>
-      <td>10:55 - 11:40</td>
-      <td>3</td>
-      <td rowspan="2" class="Chemistry">Хімія</td>
-      <td class="EnglishLanguage">Англійська мова</td>
-      <td class="History">Історія</td>
-      <td rowspan="2" class="Physics">Фізика</td>
-    </tr>
-    <tr>
-      <td>11:50 - 12:35</td>
-      <td>4</td>
-      <td class="UkrainianLanguage">Українська мова</td>
-      <td class="History">Історія</td>
-      <td class="UkrainianLanguage">Українська мова</td>
-    </tr>
-    <tr>
-      <td>12:45 - 13:30</td>
-      <td>5</td>
-      <td rowspan="2" class="Algebra">Алгебра</td>
-      <td class="History">Історія</td>
-      <td rowspan="2" class="Algebra">Алгебра</td>
-      <td class="Algebra">Алгебра</td>
-      <td rowspan="2" class="Geometry">Геометрія</td>
-    </tr>
-    <tr>
-      <td>13:40 - 14:25</td>
-      <td>6</td>
-      <td class="Geometry">Геометрія</td>
-      <td class="EnglishLanguage">Англійська мова</td>
-    </tr>
-    <tr>
-      <td>14:50 - 15:35</td>
-      <td>7</td>
-      <td class="EnglishLanguage">Англійська мова</td>
-      <td></td>
-      <td rowspan="2" class="Physics">Фізика</td>
-      <td class="Geography">Географія</td>
-      <td rowspan="2" class="Biology">Біологія</td>
-    </tr>
-    <tr>
-      <td>15:40 - 16:25</td>
-      <td>8</td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="7" id="copyright">
-        <a href="https://choosealicense.com/licenses/mit/">Ліцензія MIT</a>
-        &copy; Дмитро Мелешко 2019
-      </td>
-    </tr>
-  </tfoot>
-</table>
 {% endblock %}

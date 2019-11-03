@@ -1,0 +1,14 @@
+{
+  "Інформатика": { "back": "amber/800", "fore": "black" },
+  "Історія": { "back": "brown/500", "fore": "white" },
+  "Алгебра": { "back": "red/600", "fore": "white" },
+  "Англійська мова": { "back": "yellow/600", "fore": "black" },
+  "Біологія": { "back": "lime/500", "fore": "black" },
+  "Географія": { "back": "lightBlue/400", "fore": "black" },
+  "Геометрія": { "back": "red/600", "fore": "white" },
+  "Українська література": { "back": "green/400", "fore": "black" },
+  "Українська мова": { "back": "green/400", "fore": "black" },
+  "Фізика (практика)": { "back": "deepPurple/500", "fore": "white" },
+  "Фізика": { "back": "deepPurple/500", "fore": "white" },
+  "Хімія": { "back": "purple/600", "fore": "white" }
+}

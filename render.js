@@ -5,6 +5,7 @@ const path = require('path');
 const nunjucks = require('nunjucks');
 const klawSync = require('klaw-sync');
 const sprintf = require('sprintf-js');
+const materialColors = require('material-colors');
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const DATA_FILES_DIR = path.join(__dirname, 'data');
@@ -23,6 +24,33 @@ staticFiles.forEach(({ path: filePath, stats }) => {
   } else {
     fs.copyFileSync(filePath, pathInRendered);
   }
+});
+
+function flattenObj(obj, keySeparator = '/', keyPath = [], result = {}) {
+  for (let key in obj) {
+    if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+    let value = obj[key];
+    let newKeyPath = keyPath.concat([key]);
+    /* eslint-disable-next-line eqeqeq */
+    if (typeof value === 'object' && value !== null) {
+      flattenObj(value, keySeparator, newKeyPath, result);
+    } else {
+      result[newKeyPath.join(keySeparator)] = obj[key];
+    }
+  }
+  return result;
+}
+let flattenedMaterialColors = flattenObj(materialColors);
+
+let lessonColors = fs.readJsonSync(
+  path.join(DATA_FILES_DIR, 'lesson-colors.json'),
+);
+Object.keys(lessonColors).forEach(lessonName => {
+  let { back, fore } = lessonColors[lessonName];
+  lessonColors[lessonName] = {
+    back: flattenedMaterialColors[back],
+    fore: flattenedMaterialColors[fore],
+  };
 });
 
 let lessonTimes = fs.readJsonSync(
@@ -47,6 +75,7 @@ env.addFilter('format', function format(formatStr, ...args) {
 });
 
 let renderedHtml = env.render('timetable.njk', {
+  lessonColors,
   lessonTimes,
   lessons,
 });
