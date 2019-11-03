@@ -8,33 +8,59 @@ main {
   border-collapse: collapse;
 }
 
-#current-dir .dir-name {
-  border: 0.1em solid black;
+#current-dir > * {
   padding: 0.2em;
+  border: 0.1em solid black;
 }
 
-#current-dir .dir-name:not(:last-child) {
-  border-right-style: none;
-}
-
-#current-dir .dir-name:hover ~ .dir-name,
-#current-dir .dir-name:focus ~ .dir-name {
-  border-left-style: none;
-  border-right-style: solid;
-}
-
-#current-dir .dir-name:focus,
-#current-dir .dir-name:hover {
-  border-color: red;
-  border-right-style: solid;
-}
-
-#current-dir .dir-name:first-child {
+#current-dir > *:first-child {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
 }
 
-#current-dir .dir-name:last-child {
+#current-dir > *:last-child {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
+}
+
+#current-dir > *:not(:last-child) {
+  border-right-style: none;
+}
+
+#current-dir > *:focus {
+  border-color: red;
+  border-right-style: solid;
+}
+
+#current-dir > *:focus ~ * {
+  border-left-style: none;
+  border-right-style: solid;
+}
+
+#contents {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+#contents li {
+  border: 0.1em solid black;
+}
+
+#contents > li:not(:last-child) {
+  border-bottom-style: none;
+}
+
+#contents a {
+  display: block;
+  padding: 0.2em 0.4em;
+}
+
+#contents a:hover,
+#contents a:focus {
+  background-color: #eeeeee;
+}
+
+#contents .fa {
+  width: 1em;
+  text-align: center;
 }

@@ -25,21 +25,23 @@
     <h1>{{ title }}</h1>
 
     <h2 id="current-dir">
-      <a href="{{ relativeRoot }}" class="dir-name"><i class="fa fa-home"></i></a>
+      <a href="{{ relativeRoot }}">
+        <i class="fa fa-home" aria-hidden="true" title="додому"></i>
+      </a>
       {% for dirName in dirNames %}
         {% if not loop.last %}
-          <a href="{{ '..' + '/..'.repeat(loop.revindex0 - 1) }}" class="dir-name">{{ dirName }}</a>
+          <a href="{{ '..' + '/..'.repeat(loop.revindex0 - 1) }}">{{ dirName }}</a>
         {% else %}
-          <span class="dir-name">{{ dirName }}</span>
+          <span>{{ dirName }}</span>
         {% endif %}
       {% endfor %}
     </h2>
 
-    <ul class="fa-ul">
+    <ul id="contents">
       {% if dirNames|length %}
         <li>
           <a href="../">
-            <i class="fa fa-li fa-level-up"></i>
+            <i class="fa fa-level-up" aria-hidden="true" title="у папку вище"></i>
             &lt;папка вище&gt;
           </a>
         </li>
@@ -47,7 +49,10 @@
       {% for item in contents %}
         <li>
           <a href="./{{ item.name }}">
-            <i class="fa fa-li fa-{{ 'folder' if item.isDir else 'file-text' }}-o"></i>
+            <i
+              class="fa fa-{{ 'folder' if item.isDir else 'file-text' }}-o"
+              aria-hidden="true"
+              title="{{ 'папка' if item.isDir else 'файл' }}"></i>
             {{ item.name }}
           </a>
         </li>
