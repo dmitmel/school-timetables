@@ -59,7 +59,7 @@ main {
 
 #contents a:hover,
 #contents a:focus,
-#current-dir > div > *:hover,
-#current-dir > div > *:focus {
-  background-color: #ededed;
+#current-dir a:hover,
+#current-dir a:focus {
+  background-color: #f3f3f3;
 }

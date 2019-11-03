@@ -26,18 +26,24 @@
 
     <h2>
       <ol id="current-dir">
+        {% macro linkIf(condition, href) %}
+          {% if condition %}
+            <a href="{{ href }}">{{ caller() }}</a>
+          {% else %}
+            <span>{{ caller() }}</a>
+          {% endif %}
+        {% endmacro %}
+
         <div>
-          <a href="{{ relativeRoot }}">
+          {% call linkIf(dirNames|length, href=relativeRoot) %}
             <i class="fa fa-home" aria-hidden="true" title="додому"></i>
-          </a>
+          {% endcall %}
         </div>
         {% for dirName in dirNames %}
           <div>
-            {% if not loop.last %}
-              <a href="{{ '..' + '/..'.repeat(loop.revindex0 - 1) }}">{{ dirName }}</a>
-            {% else %}
-              <span>{{ dirName }}</span>
-            {% endif %}
+            {% call linkIf(not loop.last, href='..' + '/..'.repeat(loop.revindex0 - 1) if not loop.last else '') %}
+              {{ dirName }}
+            {% endcall %}
           </div>
         {% endfor %}
       </ol>
