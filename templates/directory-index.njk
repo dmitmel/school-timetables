@@ -3,29 +3,41 @@
 {% block title %}school-timetable/{{ dirNames | join('/') }}{% endblock %}
 
 {% block head %}
+
+  <link
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+    crossorigin="anonymous"
+  />
+
   <link rel="stylesheet" href="{{ relativeRoot }}/directory-index.css">
+
 {% endblock %}
 
 {% block body %}
 
   <h1 id="current-dir">
-    {% for dirName in ['~'].concat(dirNames) %}
-      {% if loop.last %}
-        <span class="dir-name">{{ dirName }}</span>
+    <a href="{{ relativeRoot }}" class="dir-name"><i class="fa fa-home"></i></a>
+    {% for dirName in dirNames %}
+      {% if not loop.last %}
+        <a href="{{ '..' + '/..'.repeat(loop.revindex0 - 1) }}" class="dir-name">{{ dirName }}</a>
       {% else %}
-        {% set link = '..' + '/..'.repeat(loop.length - loop.index0 - 2) %}
-        <a href="{{ link }}" class="dir-name">{{ dirName }}</a>
+        <span class="dir-name">{{ dirName }}</span>
       {% endif %}
     {% endfor %}
   </h1>
 
   <ul>
     <li>
-      <a href="../">../</a>
+      <a href="../"><i class="fa fa-level-up"></i></a>
     </li>
     {% for item in contents %}
       <li>
-        <a href="./{{ item.name }}">{{ item.name + ('/' if item.isDir else '') }}</a>
+        <a href="./{{ item.name }}">
+          <i class="fa fa-{{ 'folder' if item.isDir else 'file-text' }}-o"></i>
+          {{ item.name }}
+        </a>
       </li>
     {% endfor %}
   </ul>
