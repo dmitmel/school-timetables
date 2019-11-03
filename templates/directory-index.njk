@@ -24,20 +24,26 @@
 
     <h1>{{ title }}</h1>
 
-    <h2 id="current-dir">
-      <a href="{{ relativeRoot }}">
-        <i class="fa fa-home" aria-hidden="true" title="додому"></i>
-      </a>
-      {% for dirName in dirNames %}
-        {% if not loop.last %}
-          <a href="{{ '..' + '/..'.repeat(loop.revindex0 - 1) }}">{{ dirName }}</a>
-        {% else %}
-          <span>{{ dirName }}</span>
-        {% endif %}
-      {% endfor %}
+    <h2>
+      <ol id="current-dir">
+        <div>
+          <a href="{{ relativeRoot }}">
+            <i class="fa fa-home" aria-hidden="true" title="додому"></i>
+          </a>
+        </div>
+        {% for dirName in dirNames %}
+          <div>
+            {% if not loop.last %}
+              <a href="{{ '..' + '/..'.repeat(loop.revindex0 - 1) }}">{{ dirName }}</a>
+            {% else %}
+              <span>{{ dirName }}</span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </ol>
     </h2>
 
-    <ul id="contents">
+    <ol id="contents">
       {% if dirNames|length %}
         <li>
           <a href="../">
