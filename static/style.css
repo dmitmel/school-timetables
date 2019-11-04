@@ -1,6 +1,10 @@
+html,
+body {
+  height: 100%;
+}
+
 body {
   font-family: 'Ubuntu', sans-serif;
-  width: 100%;
 }
 
 a {

@@ -1,12 +1,13 @@
-main {
+body {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 1em;
-  max-width: 1000px;
 }
 
-#current-dir {
-  display: flex;
-  padding: 0;
+main {
+  flex-grow: 1;
 }
 
 #current-dir > div {

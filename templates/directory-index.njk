@@ -20,10 +20,11 @@
 
 {% block body %}
 
-  <main>
-
+  <header>
     <h1 id="title">{{ title }}</h1>
+  </header>
 
+  <main>
     <h2>
       <ol id="current-dir">
         {% macro linkIf(condition, href) %}
@@ -70,7 +71,13 @@
         </li>
       {% endfor %}
     </ul>
-
   </main>
+
+  <footer>
+    <p>
+      <a href="https://choosealicense.com/licenses/mit/">Ліцензія MIT</a>
+      &copy; Дмитро Мелешко 2019
+    </p>
+  </footer>
 
 {% endblock %}
