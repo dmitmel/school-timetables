@@ -6,6 +6,7 @@
   "Біологія": { "back": "lime/500", "fore": "black" },
   "Географія": { "back": "lightBlue/400", "fore": "black" },
   "Геометрія": { "back": "red/600", "fore": "white" },
+  "Математика": { "back": "red/600", "fore": "white" },
   "Українська література": { "back": "green/400", "fore": "black" },
   "Українська мова": { "back": "green/400", "fore": "black" },
   "Фізика (практика)": { "back": "deepPurple/500", "fore": "white" },
