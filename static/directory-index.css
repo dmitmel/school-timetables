@@ -10,32 +10,28 @@ main {
   flex-grow: 1;
 }
 
-#current-dir > div {
+#current-dir {
+  display: inline-flex;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
   border: 3px solid black;
-  overflow: hidden;
+  border-radius: 0.3em;
+  max-width: 100%;
 }
 
 #current-dir > div:not(:last-child) {
-  border-right-style: none;
-}
-
-#current-dir > div:first-child {
-  border-top-left-radius: 0.3em;
-  border-bottom-left-radius: 0.3em;
-}
-
-#current-dir > div:last-child {
-  border-top-right-radius: 0.3em;
-  border-bottom-right-radius: 0.3em;
+  border-right: 3px solid black;
 }
 
 #current-dir > div > * {
   display: block;
   padding: 0.2em;
+  white-space: nowrap;
 }
 
 #current-dir > div > *:not(a) {
-  background-color: #dddddd;
+  background-color: #cccccc;
 }
 
 #contents {
