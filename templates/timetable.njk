@@ -15,7 +15,9 @@
 
   <thead>
     <tr>
-      <th colspan="7" id="title">Розклад 2019-2020 І семестр 9-А клас</th>
+      <th colspan="7" id="title">
+        {% for dirName in dirNames %}{{ dirName }}/{% endfor %}{{ name }}
+      </th>
     </tr>
     <tr>
       <th>Дзвінки</th>

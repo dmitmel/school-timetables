@@ -83,6 +83,8 @@ function renderLessonFilesDir(dirPath, dataDirNames) {
         let lessons = fs.readJsonSync(fullPath);
         let timetableHtml = env.render('timetable.njk', {
           relativeRoot: templateRelativeRoot,
+          dirNames: dataDirNames,
+          name: baseName,
           lessonColors,
           lessonTimes,
           lessons,
