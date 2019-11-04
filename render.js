@@ -15,7 +15,7 @@ const RENDERED_FILES_DIR = path.join(__dirname, 'rendered');
 fs.ensureDirSync(RENDERED_FILES_DIR);
 fs.emptyDirSync(RENDERED_FILES_DIR);
 
-klawSync(STATIC_FILES_DIR).forEach(({ path: filePath, stats }) => {
+klawSync(STATIC_FILES_DIR).forEach(({path: filePath, stats}) => {
   let relativePath = path.relative(STATIC_FILES_DIR, filePath);
   let pathInRendered = path.join(RENDERED_FILES_DIR, relativePath);
   if (stats.isDirectory()) {
@@ -45,7 +45,7 @@ let lessonColors = fs.readJsonSync(
   path.join(DATA_FILES_DIR, 'lesson-colors.json'),
 );
 Object.keys(lessonColors).forEach(lessonName => {
-  let { back, fore } = lessonColors[lessonName];
+  let {back, fore} = lessonColors[lessonName];
   lessonColors[lessonName] = {
     back: flattenedMaterialColors[back],
     fore: flattenedMaterialColors[fore],
@@ -73,9 +73,9 @@ function renderLessonFilesDir(dirPath, dataDirNames) {
   let contents = [];
   fs.readdirSync(dirPath).forEach(name => {
     let fullPath = path.join(dirPath, name);
-    if (fs.statSync(fullPath).isDirectory()) {
+    if (fs.lstatSync(fullPath).isDirectory()) {
       renderLessonFilesDir(fullPath, [...dataDirNames, name]);
-      contents.push({ name, isDir: true });
+      contents.push({name, isDir: true});
     } else {
       let extName = path.extname(name);
       if (extName === '.json') {
@@ -93,7 +93,7 @@ function renderLessonFilesDir(dirPath, dataDirNames) {
           path.join(RENDERED_FILES_DIR, relativeDirPath, `${baseName}.html`),
           timetableHtml,
         );
-        contents.push({ name: baseName, isDir: false });
+        contents.push({name: baseName, isDir: false});
       }
     }
   });
