@@ -63,5 +63,5 @@ main {
 #contents a:focus,
 #current-dir a:hover,
 #current-dir a:focus {
-  background-color: #f0f0f0;
+  background-color: #eeeeee;
 }
