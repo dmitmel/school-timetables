@@ -106,24 +106,23 @@ function renderTemplate({ name, renderedName, context }) {
   fs.writeFileSync(path.join(RENDERED_FILES_DIR, renderedName), renderedText);
 }
 
-function renderLessonFilesDir(dirPath, dataDirNames) {
-  let relativeDirPath = path.relative(LESSON_DATA_FILES_DIR, dirPath);
+function renderLessonFilesDir(relativeDirPath, dataDirNames) {
+  let absoluteDirPath = path.join(LESSON_DATA_FILES_DIR, relativeDirPath);
   fs.ensureDirSync(path.join(RENDERED_FILES_DIR, relativeDirPath));
 
   let contents = [];
-  fs.readdirSync(dirPath).forEach(name => {
-    let fullPath = path.join(dirPath, name);
-    if (fs.lstatSync(fullPath).isDirectory()) {
-      renderLessonFilesDir(fullPath, [...dataDirNames, name]);
+  fs.readdirSync(absoluteDirPath).forEach(name => {
+    let absolutePath = path.join(absoluteDirPath, name);
+    let relativePath = path.join(relativeDirPath, name);
+    if (fs.lstatSync(absolutePath).isDirectory()) {
+      renderLessonFilesDir(relativePath, [...dataDirNames, name]);
       contents.push({ name, isDir: true });
     } else {
       let extName = path.extname(name);
       if (extName === '.json') {
         let baseName = path.basename(name, extName);
-        console.log(
-          `generating timetable '${path.join(relativeDirPath, name)}'`,
-        );
-        let lessons = fs.readJsonSync(fullPath);
+        console.log(`generating timetable from '${relativePath}'`);
+        let lessons = fs.readJsonSync(absolutePath);
         renderTemplate({
           name: 'timetable.njk',
           renderedName: path.join(relativeDirPath, `${baseName}.html`),
@@ -151,4 +150,4 @@ function renderLessonFilesDir(dirPath, dataDirNames) {
   });
 }
 
-renderLessonFilesDir(LESSON_DATA_FILES_DIR, []);
+renderLessonFilesDir('.', []);
