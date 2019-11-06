@@ -2,8 +2,8 @@
 
 const fs = require('fs-extra');
 const path = require('path');
+const chalk = require('chalk').default;
 const nunjucks = require('nunjucks');
-const klawSync = require('klaw-sync');
 const sprintf = require('sprintf-js');
 const materialColors = require('material-colors');
 const htmlMinifier = require('html-minifier');
@@ -13,18 +13,33 @@ const DATA_FILES_DIR = path.join(__dirname, 'data');
 const STATIC_FILES_DIR = path.join(__dirname, 'static');
 const RENDERED_FILES_DIR = path.join(__dirname, 'rendered');
 
+function logSection(...args) {
+  console.log(chalk.bold(chalk.green('==>'), ...args));
+}
+
+logSection('Preparing the directory for rendered files');
 fs.ensureDirSync(RENDERED_FILES_DIR);
 fs.emptyDirSync(RENDERED_FILES_DIR);
 
-klawSync(STATIC_FILES_DIR).forEach(({ path: filePath, stats }) => {
-  let relativePath = path.relative(STATIC_FILES_DIR, filePath);
-  let pathInRendered = path.join(RENDERED_FILES_DIR, relativePath);
-  if (stats.isDirectory()) {
-    fs.ensureDirSync(pathInRendered);
-  } else {
-    fs.copyFileSync(filePath, pathInRendered);
-  }
-});
+function copyStaticFilesDir(relativeDirPath) {
+  let srcDirPath = path.join(STATIC_FILES_DIR, relativeDirPath);
+  fs.readdirSync(srcDirPath).forEach(name => {
+    let srcPath = path.join(srcDirPath, name);
+    let relativePath = path.join(relativeDirPath, name);
+    let destPath = path.join(RENDERED_FILES_DIR, relativePath);
+    if (fs.lstatSync(srcPath).isDirectory()) {
+      fs.mkdirSync(destPath);
+      copyStaticFilesDir(relativePath);
+    } else {
+      console.log(`copying '${relativePath}'`);
+      fs.copyFileSync(srcPath, destPath);
+    }
+  });
+}
+logSection('Copying static files');
+copyStaticFilesDir('.');
+
+logSection('Loading global data files');
 
 function flattenObj(obj, keySeparator = '/', keyPath = [], result = {}) {
   for (let key in obj) {
@@ -40,8 +55,10 @@ function flattenObj(obj, keySeparator = '/', keyPath = [], result = {}) {
   }
   return result;
 }
+console.log('generating color palette');
 let flattenedMaterialColors = flattenObj(materialColors);
 
+console.log('loading lesson colors file');
 let lessonColors = fs.readJsonSync(
   path.join(DATA_FILES_DIR, 'lesson-colors.json'),
 );
@@ -53,9 +70,12 @@ Object.keys(lessonColors).forEach(lessonName => {
   };
 });
 
+console.log('loading lesson times file');
 let lessonTimes = fs.readJsonSync(
   path.join(DATA_FILES_DIR, 'lesson-times', 'Basis.json'),
 );
+
+logSection('Rendering lesson data files');
 
 let env = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(TEMPLATES_DIR),
@@ -67,7 +87,7 @@ env.addFilter('format', function format(formatStr, ...args) {
 const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
 
 function renderTemplate({ name, renderedName, context }) {
-  console.log(`rendering '${name}' to '${renderedName}'`);
+  console.log(`rendering template '${name}' to '${renderedName}'`);
 
   let renderedText = env.render(name, {
     relativeRoot: path.relative(path.dirname(renderedName), '.') || '.',
@@ -100,6 +120,9 @@ function renderLessonFilesDir(dirPath, dataDirNames) {
       let extName = path.extname(name);
       if (extName === '.json') {
         let baseName = path.basename(name, extName);
+        console.log(
+          `generating timetable '${path.join(relativeDirPath, name)}'`,
+        );
         let lessons = fs.readJsonSync(fullPath);
         renderTemplate({
           name: 'timetable.njk',
@@ -117,6 +140,7 @@ function renderLessonFilesDir(dirPath, dataDirNames) {
     }
   });
 
+  console.log(`generating index for directory '${relativeDirPath}'`);
   renderTemplate({
     name: 'directory-index.njk',
     renderedName: path.join(relativeDirPath, 'index.html'),
