@@ -39,7 +39,7 @@ function copyStaticFilesDir(relativeDirPath) {
   });
 }
 logSection('Copying static files');
-copyStaticFilesDir('.');
+if (fs.existsSync(STATIC_FILES_DIR)) copyStaticFilesDir('.');
 
 logSection('Loading global data files');
 
@@ -105,7 +105,7 @@ function compileStylesheetsDir(relativeDirPath) {
   });
 }
 logSection('Compiling stylesheets');
-compileStylesheetsDir('.');
+if (fs.existsSync(STYLESHEETS_DIR)) compileStylesheetsDir('.');
 
 logSection('Rendering lesson data files');
 
@@ -182,4 +182,4 @@ function renderLessonFilesDir(relativeDirPath, dataDirNames) {
   });
 }
 
-renderLessonFilesDir('.', []);
+if (fs.existsSync(LESSON_DATA_FILES_DIR)) renderLessonFilesDir('.', []);
