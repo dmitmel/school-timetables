@@ -1,15 +1,17 @@
+@import '../node_modules/material-colors/dist/colors.scss';
+
 table {
   margin: 1em auto;
   table-layout: fixed;
   border-collapse: collapse;
   text-align: center;
-  color: black;
+  color: $md-black;
 }
 
 table,
 td,
 th {
-  border: 1px solid #212121;
+  border: 1px solid $md-grey-900;
 }
 
 td,
@@ -19,12 +21,12 @@ th {
 
 thead,
 tfoot {
-  background-color: #484848;
-  color: #fff;
+  background-color: $md-grey-800;
+  color: $md-white;
 }
 
 #title {
-  background-color: #212121;
+  background-color: $md-grey-900;
   font-size: 1.5em;
 }
 
@@ -33,7 +35,7 @@ tfoot {
   text-align: right;
 
   a {
-    color: #90caf9;
+    color: $md-blue-200;
     text-decoration: none;
   }
 }

@@ -1,3 +1,5 @@
+@import '../node_modules/material-colors/dist/colors.scss';
+
 body {
   display: flex;
   flex-direction: column;
@@ -10,18 +12,23 @@ main {
   flex-grow: 1;
 }
 
+a,
+a:visited {
+  color: $md-blue-900;
+}
+
 #current-dir {
   display: inline-flex;
   padding: 0;
   margin: 0;
   overflow: auto;
-  border: 3px solid black;
+  border: 3px solid $md-grey-800;
   border-radius: 0.3em;
   max-width: 100%;
 
   & > div {
     &:not(:last-child) {
-      border-right: 3px solid black;
+      border-right: 3px solid $md-grey-800;
     }
 
     & > * {
@@ -30,7 +37,7 @@ main {
       white-space: nowrap;
 
       &:not(a) {
-        background-color: #cccccc;
+        background-color: $md-grey-400;
       }
     }
   }
@@ -42,7 +49,7 @@ main {
   font-size: 1.1em;
 
   li {
-    border: 1px solid black;
+    border: 1px solid $md-grey-600;
     overflow: hidden;
 
     &:not(:first-child) {
@@ -65,6 +72,6 @@ main {
 #current-dir {
   a:hover,
   a:focus {
-    background-color: #eeeeee;
+    background-color: $md-blue-50;
   }
 }
