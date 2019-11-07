@@ -9,8 +9,8 @@ body {
 
 a {
   text-decoration: none;
-}
 
-a:visited {
-  color: blue;
+  &:visited {
+    color: blue;
+  }
 }

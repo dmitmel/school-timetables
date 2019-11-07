@@ -3,12 +3,14 @@
 const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk').default;
+const sass = require('node-sass');
 const nunjucks = require('nunjucks');
 const sprintf = require('sprintf-js');
 const materialColors = require('material-colors');
 const htmlMinifier = require('html-minifier');
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
+const STYLESHEETS_DIR = path.join(__dirname, 'styles');
 const DATA_FILES_DIR = path.join(__dirname, 'data');
 const STATIC_FILES_DIR = path.join(__dirname, 'static');
 const RENDERED_FILES_DIR = path.join(__dirname, 'rendered');
@@ -74,6 +76,36 @@ console.log('loading lesson times file');
 let lessonTimes = fs.readJsonSync(
   path.join(DATA_FILES_DIR, 'lesson-times', 'Basis.json'),
 );
+
+function compileStylesheetsDir(relativeDirPath) {
+  let srcDirPath = path.join(STYLESHEETS_DIR, relativeDirPath);
+  fs.readdirSync(srcDirPath).forEach(name => {
+    let srcPath = path.join(srcDirPath, name);
+    let relativePath = path.join(relativeDirPath, name);
+    if (fs.lstatSync(srcPath).isDirectory()) {
+      let destPath = path.join(RENDERED_FILES_DIR, relativePath);
+      fs.mkdirSync(destPath);
+      compileStylesheetsDir(relativePath);
+    } else {
+      let extName = path.extname(name);
+      if (extName === '.scss') {
+        let baseName = path.basename(name, extName);
+        let compiledName = path.join(relativeDirPath, `${baseName}.css`);
+        let destPath = path.join(RENDERED_FILES_DIR, compiledName);
+        console.log(`compiling '${relativePath}' to '${compiledName}'`);
+        let result = sass.renderSync({
+          file: srcPath,
+          outFile: destPath,
+          sourceMap: true,
+        });
+        fs.writeFileSync(destPath, result.css);
+        fs.writeFileSync(`${destPath}.map`, result.map);
+      }
+    }
+  });
+}
+logSection('Compiling stylesheets');
+compileStylesheetsDir('.');
 
 logSection('Rendering lesson data files');
 

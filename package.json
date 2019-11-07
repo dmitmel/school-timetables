@@ -10,6 +10,7 @@
     "html-minifier": "^4.0.0",
     "http-server": "^0.11.1",
     "material-colors": "^1.2.6",
+    "node-sass": "^4.13.0",
     "nodemon": "^1.19.4",
     "nunjucks": "^3.2.0",
     "sprintf-js": "^1.1.2"
@@ -17,7 +18,7 @@
   "scripts": {
     "prestart": "yarn run build",
     "start": "http-server rendered",
-    "dev": "nodemon --watch data --watch static --watch templates --exec 'yarn start'",
+    "dev": "nodemon --ext '*' --watch data --watch static --watch styles --watch templates --exec 'yarn start'",
     "build": "node render.js",
     "lint": "eslint --ignore-path .gitignore ."
   }
