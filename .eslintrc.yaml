@@ -5,3 +5,6 @@ overrides:
   - files: render.js
     rules:
       node/no-unpublished-require: off
+  - files: templates/**/*
+    rules:
+      new-cap: off

@@ -4,8 +4,6 @@ const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk').default;
 const sass = require('node-sass');
-const nunjucks = require('nunjucks');
-const sprintf = require('sprintf-js');
 const materialColors = require('material-colors');
 const htmlMinifier = require('html-minifier');
 
@@ -109,22 +107,18 @@ if (fs.existsSync(STYLESHEETS_DIR)) compileStylesheetsDir('.');
 
 logSection('Rendering lesson data files');
 
-let env = new nunjucks.Environment(
-  new nunjucks.FileSystemLoader(TEMPLATES_DIR),
-);
-env.addFilter('format', function format(formatStr, ...args) {
-  return sprintf.vsprintf(formatStr, args);
-});
-
 const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
 
 function renderTemplate({ name, renderedName, context }) {
   console.log(`rendering template '${name}' to '${renderedName}'`);
 
-  let renderedText = env.render(name, {
+  // eslint-disable-next-line global-require
+  let templateFunction = require(path.join(TEMPLATES_DIR, name));
+  let renderedDom = templateFunction({
     relativeRoot: path.relative(path.dirname(renderedName), '.') || '.',
     ...context,
   });
+  let renderedText = `<!DOCTYPE html>${renderedDom.outerHTML}`;
 
   renderedText = htmlMinifier.minify(renderedText, {
     collapseWhitespace: true,
@@ -156,7 +150,7 @@ function renderLessonFilesDir(relativeDirPath, dataDirNames) {
         console.log(`generating timetable from '${relativePath}'`);
         let lessons = fs.readJsonSync(absolutePath);
         renderTemplate({
-          name: 'timetable.njk',
+          name: 'Timetable',
           renderedName: path.join(relativeDirPath, `${baseName}.html`),
           context: {
             dirNames: dataDirNames,
@@ -173,7 +167,7 @@ function renderLessonFilesDir(relativeDirPath, dataDirNames) {
 
   console.log(`generating index for directory '${relativeDirPath}'`);
   renderTemplate({
-    name: 'directory-index.njk',
+    name: 'DirectoryIndex',
     renderedName: path.join(relativeDirPath, 'index.html'),
     context: {
       dirNames: dataDirNames,

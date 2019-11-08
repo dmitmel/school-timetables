@@ -1,5 +1,10 @@
 @import '../node_modules/material-colors/dist/colors.scss';
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   display: flex;
   flex-direction: column;
