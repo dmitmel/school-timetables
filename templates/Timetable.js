@@ -47,7 +47,7 @@ module.exports = function Timetable({
               return h(
                 'td',
                 {
-                  style: { 'background-color': color.back, color: color.fore },
+                  style: `background-color: ${color.back}; color: ${color.fore}`,
                 },
                 lesson,
               );

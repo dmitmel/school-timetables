@@ -1,7 +1,6 @@
 {
   "private": true,
   "dependencies": {
-    "html-element": "^2.3.0",
     "material-colors": "^1.2.6",
     "sprintf-js": "^1.1.2"
   },
