@@ -1,33 +1,39 @@
 @import '../../node_modules/material-colors/dist/colors.scss';
 
 .CurrentDirectory {
-  display: inline-flex;
-  padding: 0;
-  margin: 0;
-  overflow: auto;
-  border: 3px solid $md-grey-800;
-  border-radius: 0.3em;
-  max-width: 100%;
-  list-style-type: none;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: 1em;
 
-  & > li {
-    &:not(:last-child) {
-      border-right: 3px solid $md-grey-800;
-    }
+  ol {
+    display: inline-flex;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    border: 3px solid $md-grey-800;
+    border-radius: 0.3em;
+    max-width: 100%;
+    list-style-type: none;
 
-    & > * {
-      display: block;
-      padding: 0.2em;
-      white-space: nowrap;
+    & > li {
+      &:not(:last-child) {
+        border-right: 3px solid $md-grey-800;
+      }
 
-      &:not(a) {
-        background-color: $md-grey-400;
+      & > * {
+        display: block;
+        padding: 0.2em;
+        white-space: nowrap;
+
+        &:not(a) {
+          background-color: $md-grey-400;
+        }
       }
     }
-  }
 
-  a:hover,
-  a:focus {
-    background-color: $md-blue-50;
+    a:hover,
+    a:focus {
+      background-color: $md-blue-50;
+    }
   }
 }

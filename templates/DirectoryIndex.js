@@ -23,7 +23,7 @@ module.exports = function DirectoryIndex({ relativeRoot, dirNames, contents }) {
         CurrentDirectory({ dirs: dirNames, disableLast: true }),
         h(
           'ul',
-          { id: 'contents' },
+          { class: 'DirectoryIndex' },
           dirNames.length > 0
             ? h(
                 'li',

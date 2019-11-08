@@ -2,10 +2,10 @@ const h = require('../hyperscript');
 
 module.exports = function CurrentDirectory({ dirs, disableLast = false }) {
   return h(
-    'h2',
+    'div',
+    { class: 'CurrentDirectory' },
     h(
       'ol',
-      { class: 'CurrentDirectory' },
       [
         h('i', {
           class: 'fa fa-home',

@@ -25,39 +25,45 @@ module.exports = function Timetable({
       Header(),
       h(
         'main',
+        CurrentDirectory({ dirs: dirNames }),
         h(
-          'table',
+          'div',
           { class: 'Timetable' },
-          CurrentDirectory({ dirs: dirNames }),
           h(
-            'thead',
-            h('tr', h('th', { colspan: 7, class: 'title' }, name)),
+            'table',
             h(
-              'tr',
-              h('th', 'Дзвінки'),
-              h('th', 'Урок'),
-              WEEKDAYS.map(weekday => h('th', weekday)),
-            ),
-          ),
-          h(
-            'tbody',
-            lessonTimes.map(({ start, end }, lessonIndex) =>
+              'thead',
+              h('tr', h('th', { colspan: 7, class: 'title' }, name)),
               h(
                 'tr',
-                h('td', sprintf('%02d:%02d\u2013%02d:%02d', ...start, ...end)),
-                h('td', lessonIndex + 1),
-                WEEKDAYS.map((_weekday, weekdayIndex) => {
-                  let lesson = lessons[weekdayIndex][lessonIndex];
-                  if (lesson == null) return h('td');
-                  let color = lessonColors[lesson];
-                  return h(
+                h('th', 'Дзвінки'),
+                h('th', 'Урок'),
+                WEEKDAYS.map(weekday => h('th', weekday)),
+              ),
+            ),
+            h(
+              'tbody',
+              lessonTimes.map(({ start, end }, lessonIndex) =>
+                h(
+                  'tr',
+                  h(
                     'td',
-                    {
-                      style: `background-color: ${color.back}; color: ${color.fore}`,
-                    },
-                    lesson,
-                  );
-                }),
+                    sprintf('%02d:%02d\u2013%02d:%02d', ...start, ...end),
+                  ),
+                  h('td', lessonIndex + 1),
+                  WEEKDAYS.map((_weekday, weekdayIndex) => {
+                    let lesson = lessons[weekdayIndex][lessonIndex];
+                    if (lesson == null) return h('td');
+                    let color = lessonColors[lesson];
+                    return h(
+                      'td',
+                      {
+                        style: `background-color: ${color.back}; color: ${color.fore}`,
+                      },
+                      lesson,
+                    );
+                  }),
+                ),
               ),
             ),
           ),

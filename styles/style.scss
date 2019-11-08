@@ -1,5 +1,9 @@
 @import '../node_modules/material-colors/dist/colors.scss';
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Ubuntu', sans-serif;
 }

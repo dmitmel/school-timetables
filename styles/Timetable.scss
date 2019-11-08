@@ -1,13 +1,17 @@
 @import '../node_modules/material-colors/dist/colors.scss';
 
-table.Timetable {
-  margin: 1em auto;
-  table-layout: fixed;
-  border-collapse: collapse;
-  text-align: center;
-  color: $md-black;
+.Timetable {
+  overflow: auto;
 
-  &,
+  table {
+    margin: 0 auto;
+    table-layout: fixed;
+    border-collapse: collapse;
+    text-align: center;
+    color: $md-black;
+  }
+
+  table,
   td,
   th {
     border: 1px solid $md-grey-900;
