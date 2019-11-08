@@ -7,10 +7,18 @@ module.exports = function Footer() {
       'p',
       h(
         'a',
-        { href: 'https://choosealicense.com/licenses/mit/' },
-        'Ліцензія MIT',
+        { href: 'https://github.com/dmitmel/school-timetable' },
+        'Сирцевий код',
       ),
-      ' \u00A9 Дмитро Мелешко 2019',
+      ' на GitHub, ',
+      h(
+        'a',
+        { href: 'https://choosealicense.com/licenses/mit/' },
+        'ліцензія MIT',
+      ),
+      ', \u00A9 ',
+      h('a', { href: 'https://github.com/dmitmel' }, 'Дмитро Мелешко'),
+      ' 2019',
     ),
   );
 };
