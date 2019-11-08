@@ -2,9 +2,6 @@ extends: eslint-config-dmitmel/presets/node
 rules:
   node/shebang: off
 overrides:
-  - files: render.js
-    rules:
-      node/no-unpublished-require: off
   - files: templates/**/*
     rules:
       new-cap: off

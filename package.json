@@ -1,18 +1,18 @@
 {
   "private": true,
   "dependencies": {
+    "chalk": "^2.4.2",
+    "fs-extra": "^8.1.0",
+    "html-minifier": "^4.0.0",
     "material-colors": "^1.2.6",
+    "node-sass": "^4.13.0",
     "sprintf-js": "^1.1.2"
   },
   "devDependencies": {
-    "chalk": "^2.4.2",
     "eslint": "^6.6.0",
     "eslint-config-dmitmel": "dmitmel/eslint-config-dmitmel",
     "eslint-plugin-node": "^10.0.0",
-    "fs-extra": "^8.1.0",
-    "html-minifier": "^4.0.0",
     "http-server": "^0.11.1",
-    "node-sass": "^4.13.0",
     "nodemon": "^1.19.4"
   },
   "scripts": {
