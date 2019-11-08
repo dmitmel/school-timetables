@@ -5,16 +5,14 @@ const Footer = require('./components/Footer');
 const CurrentDirectory = require('./components/CurrentDirectory');
 
 module.exports = function DirectoryIndex({ relativeRoot, dirNames, contents }) {
-  let title = 'Індекс шкільних розкладів уроків';
-
   return Layout({
     relativeRoot,
+    titleSuffix: dirNames.map(s => `/${s}`).join(''),
     head: [
       h('link', {
         rel: 'stylesheet',
         href: `${relativeRoot}/DirectoryIndex.css`,
       }),
-      h('title', title),
     ],
     body: [
       Header(),

@@ -1,6 +1,8 @@
 const h = require('./hyperscript');
 
-module.exports = function Layout({ relativeRoot, head, body }) {
+const TITLE = 'Індекс шкільних розкладів уроків';
+
+module.exports = function Layout({ relativeRoot, titleSuffix, head, body }) {
   return h(
     'html',
     { lang: 'en' },
@@ -11,6 +13,7 @@ module.exports = function Layout({ relativeRoot, head, body }) {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1.0',
       }),
+      h('title', `${TITLE}${titleSuffix}`),
       h('link', {
         rel: 'stylesheet',
         href:

@@ -17,6 +17,7 @@ module.exports = function Timetable({
 }) {
   return Layout({
     relativeRoot,
+    titleSuffix: [...dirNames, name].map(s => `/${s}`).join(''),
     head: [
       h('title', 'school-timetable'),
       h('link', { rel: 'stylesheet', href: `${relativeRoot}/Timetable.css` }),
