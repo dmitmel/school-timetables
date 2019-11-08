@@ -95,6 +95,7 @@ function compileStylesheetsDir(relativeDirPath) {
           file: srcPath,
           outFile: destPath,
           sourceMap: true,
+          outputStyle: 'compressed',
         });
         fs.writeFileSync(destPath, result.css);
         fs.writeFileSync(`${destPath}.map`, result.map);
