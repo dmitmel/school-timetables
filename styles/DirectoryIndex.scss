@@ -1,53 +1,5 @@
 @import '../node_modules/material-colors/dist/colors.scss';
 
-html,
-body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 1em;
-}
-
-main {
-  flex-grow: 1;
-}
-
-a,
-a:visited {
-  color: $md-blue-900;
-}
-
-#current-dir {
-  display: inline-flex;
-  padding: 0;
-  margin: 0;
-  overflow: auto;
-  border: 3px solid $md-grey-800;
-  border-radius: 0.3em;
-  max-width: 100%;
-
-  & > div {
-    &:not(:last-child) {
-      border-right: 3px solid $md-grey-800;
-    }
-
-    & > * {
-      display: block;
-      padding: 0.2em;
-      white-space: nowrap;
-
-      &:not(a) {
-        background-color: $md-grey-400;
-      }
-    }
-  }
-}
-
 #contents {
   padding-left: 0;
   list-style-type: none;
@@ -71,10 +23,7 @@ a:visited {
     width: 1em;
     text-align: center;
   }
-}
 
-#contents,
-#current-dir {
   a:hover,
   a:focus {
     background-color: $md-blue-50;

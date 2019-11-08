@@ -1,11 +1,33 @@
+@import '../node_modules/material-colors/dist/colors.scss';
+
 body {
   font-family: 'Ubuntu', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
+main {
+  flex-grow: 1;
 }
 
 a {
   text-decoration: none;
 
+  &,
   &:visited {
-    color: blue;
+    color: $md-blue-900;
   }
 }
+
+@import './components/CurrentDirectory.scss';

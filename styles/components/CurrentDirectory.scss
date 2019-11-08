@@ -1,0 +1,33 @@
+@import '../../node_modules/material-colors/dist/colors.scss';
+
+.CurrentDirectory {
+  display: inline-flex;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  border: 3px solid $md-grey-800;
+  border-radius: 0.3em;
+  max-width: 100%;
+  list-style-type: none;
+
+  & > li {
+    &:not(:last-child) {
+      border-right: 3px solid $md-grey-800;
+    }
+
+    & > * {
+      display: block;
+      padding: 0.2em;
+      white-space: nowrap;
+
+      &:not(a) {
+        background-color: $md-grey-400;
+      }
+    }
+  }
+
+  a:hover,
+  a:focus {
+    background-color: $md-blue-50;
+  }
+}
