@@ -10,6 +10,7 @@ const htmlMinifier = require('html-minifier');
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const STYLESHEETS_DIR = path.join(__dirname, 'styles');
 const DATA_FILES_DIR = path.join(__dirname, 'data');
+const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
 const STATIC_FILES_DIR = path.join(__dirname, 'static');
 const RENDERED_FILES_DIR = path.join(__dirname, 'rendered');
 
@@ -17,27 +18,42 @@ function logSection(...args) {
   console.log(chalk.bold(chalk.green('==>'), ...args));
 }
 
+function walkSync(dir, callback, parentDirNames = []) {
+  let dirs = [];
+  let notDirs = [];
+  fs.readdirSync(dir).forEach(name => {
+    let stats = fs.lstatSync(path.join(dir, name));
+    (stats.isDirectory() ? dirs : notDirs).push(name);
+  });
+  callback(parentDirNames, dirs, notDirs);
+  dirs.forEach(subdir =>
+    walkSync(path.join(dir, subdir), callback, [...parentDirNames, subdir]),
+  );
+}
+
 logSection('Preparing the directory for rendered files');
 fs.ensureDirSync(RENDERED_FILES_DIR);
 fs.emptyDirSync(RENDERED_FILES_DIR);
 
-function copyStaticFilesDir(relativeDirPath) {
-  let srcDirPath = path.join(STATIC_FILES_DIR, relativeDirPath);
-  fs.readdirSync(srcDirPath).forEach(name => {
-    let srcPath = path.join(srcDirPath, name);
-    let relativePath = path.join(relativeDirPath, name);
-    let destPath = path.join(RENDERED_FILES_DIR, relativePath);
-    if (fs.lstatSync(srcPath).isDirectory()) {
-      fs.mkdirSync(destPath);
-      copyStaticFilesDir(relativePath);
-    } else {
+logSection('Copying static files');
+if (fs.existsSync(STATIC_FILES_DIR)) {
+  walkSync(STATIC_FILES_DIR, (parentDirNames, dirNames, fileNames) => {
+    let relativeDirPath = path.join(...parentDirNames);
+
+    dirNames.forEach(name => {
+      fs.mkdirSync(path.join(RENDERED_FILES_DIR, relativeDirPath, name));
+    });
+
+    fileNames.forEach(name => {
+      let relativePath = path.join(relativeDirPath, name);
       console.log(`copying '${relativePath}'`);
-      fs.copyFileSync(srcPath, destPath);
-    }
+      fs.copyFileSync(
+        path.join(STATIC_FILES_DIR, relativePath),
+        path.join(RENDERED_FILES_DIR, relativePath),
+      );
+    });
   });
 }
-logSection('Copying static files');
-if (fs.existsSync(STATIC_FILES_DIR)) copyStaticFilesDir('.');
 
 logSection('Loading global data files');
 
@@ -75,40 +91,45 @@ let lessonTimes = fs.readJsonSync(
   path.join(DATA_FILES_DIR, 'lesson-times', 'Basis.json'),
 );
 
-function compileStylesheetsDir(relativeDirPath) {
-  let srcDirPath = path.join(STYLESHEETS_DIR, relativeDirPath);
-  fs.readdirSync(srcDirPath).forEach(name => {
-    let srcPath = path.join(srcDirPath, name);
-    let relativePath = path.join(relativeDirPath, name);
-    if (fs.lstatSync(srcPath).isDirectory()) {
-      let destPath = path.join(RENDERED_FILES_DIR, relativePath);
-      fs.mkdirSync(destPath);
-      compileStylesheetsDir(relativePath);
-    } else {
+function compileScss({ name, compiledName }) {
+  console.log(`compiling stylesheet '${name}' to '${compiledName}'`);
+  let destPath = path.join(RENDERED_FILES_DIR, compiledName);
+
+  let result = sass.renderSync({
+    file: path.join(STYLESHEETS_DIR, name),
+    outFile: destPath,
+    sourceMap: true,
+    outputStyle: 'compressed',
+  });
+
+  fs.writeFileSync(destPath, result.css);
+  fs.writeFileSync(`${destPath}.map`, result.map);
+}
+
+logSection('Compiling stylesheets');
+if (fs.existsSync(STYLESHEETS_DIR)) {
+  walkSync(STYLESHEETS_DIR, (parentDirNames, dirNames, fileNames) => {
+    let relativeDirPath = path.join(...parentDirNames);
+
+    dirNames.forEach(name => {
+      fs.mkdirSync(path.join(RENDERED_FILES_DIR, relativeDirPath, name));
+    });
+
+    fileNames.forEach(name => {
       let extName = path.extname(name);
       if (extName === '.scss') {
         let baseName = path.basename(name, extName);
-        let compiledName = path.join(relativeDirPath, `${baseName}.css`);
-        let destPath = path.join(RENDERED_FILES_DIR, compiledName);
-        console.log(`compiling '${relativePath}' to '${compiledName}'`);
-        let result = sass.renderSync({
-          file: srcPath,
-          outFile: destPath,
-          sourceMap: true,
-          outputStyle: 'compressed',
+        let relativePath = path.join(relativeDirPath, name);
+        compileScss({
+          name: relativePath,
+          compiledName: path.join(relativeDirPath, `${baseName}.css`),
         });
-        fs.writeFileSync(destPath, result.css);
-        fs.writeFileSync(`${destPath}.map`, result.map);
       }
-    }
+    });
   });
 }
-logSection('Compiling stylesheets');
-if (fs.existsSync(STYLESHEETS_DIR)) compileStylesheetsDir('.');
 
 logSection('Rendering lesson data files');
-
-const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
 
 function renderTemplate({ name, renderedName, context }) {
   console.log(`rendering template '${name}' to '${renderedName}'`);
@@ -119,9 +140,10 @@ function renderTemplate({ name, renderedName, context }) {
     relativeRoot: path.relative(path.dirname(renderedName), '.') || '.',
     ...context,
   });
-  let renderedText = `<!DOCTYPE html>${renderedDom.outerHTML}`;
 
-  renderedText = htmlMinifier.minify(renderedText, {
+  let text = `<!DOCTYPE html>${renderedDom.outerHTML}`;
+
+  text = htmlMinifier.minify(text, {
     collapseWhitespace: true,
     removeComments: true,
     removeRedundantAttributes: true,
@@ -130,31 +152,33 @@ function renderTemplate({ name, renderedName, context }) {
     useShortDoctype: true,
   });
 
-  fs.writeFileSync(path.join(RENDERED_FILES_DIR, renderedName), renderedText);
+  fs.writeFileSync(path.join(RENDERED_FILES_DIR, renderedName), text);
 }
 
-function renderLessonFilesDir(relativeDirPath, dataDirNames) {
-  let absoluteDirPath = path.join(LESSON_DATA_FILES_DIR, relativeDirPath);
-  fs.ensureDirSync(path.join(RENDERED_FILES_DIR, relativeDirPath));
+if (fs.existsSync(LESSON_DATA_FILES_DIR)) {
+  walkSync(LESSON_DATA_FILES_DIR, (parentDirNames, dirNames, fileNames) => {
+    let relativeDirPath = path.join(...parentDirNames);
+    let contents = [];
 
-  let contents = [];
-  fs.readdirSync(absoluteDirPath).forEach(name => {
-    let absolutePath = path.join(absoluteDirPath, name);
-    let relativePath = path.join(relativeDirPath, name);
-    if (fs.lstatSync(absolutePath).isDirectory()) {
-      renderLessonFilesDir(relativePath, [...dataDirNames, name]);
-      contents.push({ name, isDir: true });
-    } else {
+    dirNames.forEach(name => {
+      fs.mkdirSync(path.join(RENDERED_FILES_DIR, relativeDirPath, name));
+      contents.push({ isDir: true, name });
+    });
+
+    fileNames.forEach(name => {
       let extName = path.extname(name);
       if (extName === '.json') {
         let baseName = path.basename(name, extName);
+        let relativePath = path.join(relativeDirPath, name);
         console.log(`generating timetable from '${relativePath}'`);
-        let lessons = fs.readJsonSync(absolutePath);
+        let lessons = fs.readJsonSync(
+          path.join(LESSON_DATA_FILES_DIR, relativePath),
+        );
         renderTemplate({
           name: 'Timetable',
           renderedName: path.join(relativeDirPath, `${baseName}.html`),
           context: {
-            dirNames: dataDirNames,
+            dirNames: parentDirNames,
             name: baseName,
             lessonColors,
             lessonTimes,
@@ -163,18 +187,16 @@ function renderLessonFilesDir(relativeDirPath, dataDirNames) {
         });
         contents.push({ name: baseName, isDir: false });
       }
-    }
-  });
+    });
 
-  console.log(`generating index for directory '${relativeDirPath}'`);
-  renderTemplate({
-    name: 'DirectoryIndex',
-    renderedName: path.join(relativeDirPath, 'index.html'),
-    context: {
-      dirNames: dataDirNames,
-      contents,
-    },
+    console.log(`generating index for directory '${relativeDirPath}'`);
+    renderTemplate({
+      name: 'DirectoryIndex',
+      renderedName: path.join(relativeDirPath, 'index.html'),
+      context: {
+        dirNames: parentDirNames,
+        contents,
+      },
+    });
   });
 }
-
-if (fs.existsSync(LESSON_DATA_FILES_DIR)) renderLessonFilesDir('.', []);
