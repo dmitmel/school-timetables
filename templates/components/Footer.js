@@ -13,7 +13,15 @@ module.exports = function Footer() {
       '\u00A9 2019 ',
       h('a', { href: metadata.AUTHOR_WEBSITE_URL }, 'Дмитро Мелешко'),
       ' <',
-      h('a', { href: metadata.AUTHOR_EMAIL_URL }, metadata.AUTHOR_EMAIL),
+      h(
+        'a',
+        {
+          href: `mailto:${metadata.AUTHOR_EMAIL}?subject=${encodeURIComponent(
+            metadata.TITLE,
+          )}`,
+        },
+        metadata.AUTHOR_EMAIL,
+      ),
       '>',
     ),
   );
