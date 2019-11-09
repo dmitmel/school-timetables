@@ -35,21 +35,25 @@ module.exports = function DirectoryIndex({ relativeRoot, dirNames, contents }) {
                 ),
               )
             : null,
-          contents.map(item =>
-            h(
-              'li',
+          contents
+            .sort(({ name: a }, { name: b }) =>
+              a.localeCompare(b, 'uk-UA', { numeric: true }),
+            )
+            .map(item =>
               h(
-                'a',
-                { href: `./${item.name}` },
-                h('i', {
-                  class: `fa fa-${item.isDir ? 'folder' : 'file-text'}-o`,
-                  'aria-hidden': true,
-                  title: item.isDir ? 'папка' : 'файл',
-                }),
-                ` ${item.name}`,
+                'li',
+                h(
+                  'a',
+                  { href: `./${item.name}` },
+                  h('i', {
+                    class: `fa fa-${item.isDir ? 'folder' : 'file-text'}-o`,
+                    'aria-hidden': true,
+                    title: item.isDir ? 'папка' : 'файл',
+                  }),
+                  ` ${item.name}`,
+                ),
               ),
             ),
-          ),
         ),
       ),
       Footer(),
