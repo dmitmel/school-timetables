@@ -79,11 +79,8 @@ let lessonColors = fs.readJsonSync(
   path.join(DATA_FILES_DIR, 'lesson-colors.json'),
 );
 Object.keys(lessonColors).forEach(lessonName => {
-  let { back, fore } = lessonColors[lessonName];
-  lessonColors[lessonName] = {
-    back: palette[back],
-    fore: palette[fore],
-  };
+  let [back, fore] = lessonColors[lessonName];
+  lessonColors[lessonName] = [palette[back], palette[fore]];
 });
 
 console.log('loading lesson times file');
