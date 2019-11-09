@@ -1,0 +1,34 @@
+@import '../../node_modules/material-colors/dist/colors.scss';
+
+table.Timetable {
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: center;
+  color: $md-black;
+
+  &,
+  td,
+  th {
+    border: 1px solid $md-grey-900;
+  }
+
+  td,
+  th {
+    padding: 0.4em 0.8em;
+  }
+
+  thead,
+  tfoot {
+    background-color: $md-grey-800;
+    color: $md-white;
+
+    a {
+      color: $md-light-blue-100;
+    }
+  }
+
+  .title {
+    background-color: $md-grey-900;
+    font-size: 1.5em;
+  }
+}

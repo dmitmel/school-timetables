@@ -18,20 +18,20 @@ body {
   flex-direction: column;
   max-width: 960px;
   margin: 0 auto;
-}
 
-header,
-main,
-footer {
-  padding: 0 1em;
-}
+  & > header,
+  & > main,
+  & > footer {
+    padding: 0 1em;
+  }
 
-main {
-  flex-grow: 1;
-}
+  & > main {
+    flex-grow: 1;
+  }
 
-footer {
-  font-size: 0.8em;
+  & > footer {
+    font-size: 0.8em;
+  }
 }
 
 #title {
@@ -41,11 +41,7 @@ footer {
 
 a {
   text-decoration: none;
-
-  &,
-  &:visited {
-    color: $md-blue-900;
-  }
+  color: $md-blue-900;
 }
 
 @import './components/CurrentDirectory.scss';

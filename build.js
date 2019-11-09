@@ -178,21 +178,29 @@ if (fs.existsSync(LESSON_DATA_FILES_DIR)) {
       if (extName === '.json5') {
         let baseName = path.basename(name, extName);
         let relativePath = path.join(relativeDirPath, name);
-        console.log(`generating timetable from '${relativePath}'`);
         let { school, lessons } = readJsonSync(
           path.join(LESSON_DATA_FILES_DIR, relativePath),
         );
+
+        console.log(`generating timetable from '${relativePath}'`);
+        let context = {
+          dirNames: parentDirNames,
+          name: baseName,
+          lessonColors,
+          lessonTimes: schools[school].lessonTimes,
+          lessons,
+        };
         renderTemplate({
-          name: 'Timetable',
+          name: 'TimetablePage',
           renderedName: path.join(relativeDirPath, `${baseName}.html`),
-          context: {
-            dirNames: parentDirNames,
-            name: baseName,
-            lessonColors,
-            lessonTimes: schools[school].lessonTimes,
-            lessons,
-          },
+          context,
         });
+        renderTemplate({
+          name: 'PrintableTimetablePage',
+          renderedName: path.join(relativeDirPath, `${baseName}.print.html`),
+          context,
+        });
+
         contents.push({ name: baseName, isDir: false });
       }
     });

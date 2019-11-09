@@ -1,0 +1,18 @@
+body > main {
+  padding: 0;
+
+  & > *:not(#TimetableWrapper) {
+    padding: 0 1em;
+  }
+}
+
+#TimetableWrapper {
+  overflow: auto;
+}
+
+table.Timetable {
+  display: inline-table;
+  margin: 0 1em;
+}
+
+@import './components/Timetable.scss';

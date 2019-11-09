@@ -39,18 +39,18 @@ module.exports = function DirectoryIndex({ relativeRoot, dirNames, contents }) {
             .sort(({ name: a }, { name: b }) =>
               a.localeCompare(b, 'uk-UA', { numeric: true }),
             )
-            .map(item =>
+            .map(({ isDir, name }) =>
               h(
                 'li',
                 h(
                   'a',
-                  { href: `./${item.name}` },
+                  { href: `./${name}${isDir ? '/' : '.html'}` },
                   h('i', {
-                    class: `fa fa-${item.isDir ? 'folder' : 'file-text'}-o`,
+                    class: `fa fa-${isDir ? 'folder' : 'file-text'}-o`,
                     'aria-hidden': true,
-                    title: item.isDir ? 'папка' : 'файл',
+                    title: isDir ? 'папка' : 'файл',
                   }),
-                  ` ${item.name}`,
+                  ` ${name}`,
                 ),
               ),
             ),

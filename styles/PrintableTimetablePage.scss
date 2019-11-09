@@ -1,0 +1,18 @@
+@import './components/Timetable.scss';
+
+body {
+  display: block;
+  max-width: unset;
+  margin: unset;
+
+  & > main {
+    padding: 1em;
+  }
+}
+
+table.Timetable {
+  & > tfoot {
+    text-align: left;
+    font-size: 0.9em;
+  }
+}
