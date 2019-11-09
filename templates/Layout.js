@@ -40,3 +40,5 @@ module.exports = function Layout({ relativeRoot, titleSuffix, head, body }) {
     h('body', body),
   );
 };
+
+module.exports.TITLE = TITLE;

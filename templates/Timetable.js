@@ -59,9 +59,11 @@ module.exports = function Timetable({
                       let color = lessonColors[lesson];
                       return h(
                         'td',
-                        {
-                          style: `background-color: ${color.back}; color: ${color.fore}`,
-                        },
+                        color != null
+                          ? {
+                              style: `background-color: ${color.back}; color: ${color.fore}`,
+                            }
+                          : null,
                         lesson,
                       );
                     }),
