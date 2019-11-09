@@ -6,6 +6,7 @@ const chalk = require('chalk').default;
 const sass = require('node-sass');
 const materialColors = require('material-colors');
 const htmlMinifier = require('html-minifier');
+const JSON5 = require('json5');
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const STYLESHEETS_DIR = path.join(__dirname, 'styles');
@@ -29,6 +30,11 @@ function walkSync(dir, callback, parentDirNames = []) {
   dirs.forEach(subdir =>
     walkSync(path.join(dir, subdir), callback, [...parentDirNames, subdir]),
   );
+}
+
+function readJsonSync(file) {
+  let content = fs.readFileSync(file);
+  return JSON5.parse(content);
 }
 
 logSection('Preparing the directory for rendered files');
@@ -75,8 +81,8 @@ console.log('generating color palette');
 let palette = flattenObj(materialColors);
 
 console.log('loading lesson colors file');
-let lessonColors = fs.readJsonSync(
-  path.join(DATA_FILES_DIR, 'lesson-colors.json'),
+let lessonColors = readJsonSync(
+  path.join(DATA_FILES_DIR, 'lesson-colors.json5'),
 );
 Object.keys(lessonColors).forEach(lessonName => {
   let [back, fore] = lessonColors[lessonName];
@@ -84,8 +90,8 @@ Object.keys(lessonColors).forEach(lessonName => {
 });
 
 console.log('loading lesson times file');
-let lessonTimes = fs.readJsonSync(
-  path.join(DATA_FILES_DIR, 'lesson-times', 'Basis.json'),
+let lessonTimes = readJsonSync(
+  path.join(DATA_FILES_DIR, 'lesson-times', 'Basis.json5'),
 );
 
 function compileScss({ name, compiledName }) {
@@ -164,11 +170,11 @@ if (fs.existsSync(LESSON_DATA_FILES_DIR)) {
 
     fileNames.forEach(name => {
       let extName = path.extname(name);
-      if (extName === '.json') {
+      if (extName === '.json5') {
         let baseName = path.basename(name, extName);
         let relativePath = path.join(relativeDirPath, name);
         console.log(`generating timetable from '${relativePath}'`);
-        let lessons = fs.readJsonSync(
+        let lessons = readJsonSync(
           path.join(LESSON_DATA_FILES_DIR, relativePath),
         );
         renderTemplate({
