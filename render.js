@@ -72,7 +72,7 @@ function flattenObj(obj, keySeparator = '/', keyPath = [], result = {}) {
   return result;
 }
 console.log('generating color palette');
-let flattenedMaterialColors = flattenObj(materialColors);
+let palette = flattenObj(materialColors);
 
 console.log('loading lesson colors file');
 let lessonColors = fs.readJsonSync(
@@ -81,8 +81,8 @@ let lessonColors = fs.readJsonSync(
 Object.keys(lessonColors).forEach(lessonName => {
   let { back, fore } = lessonColors[lessonName];
   lessonColors[lessonName] = {
-    back: flattenedMaterialColors[back],
-    fore: flattenedMaterialColors[fore],
+    back: palette[back],
+    fore: palette[fore],
   };
 });
 

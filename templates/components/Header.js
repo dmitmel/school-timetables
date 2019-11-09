@@ -1,8 +1,6 @@
 const h = require('../hyperscript');
+const CurrentDirectory = require('./CurrentDirectory');
 
-module.exports = function Header() {
-  return h(
-    'header',
-    h('h1', { id: 'title' }, 'Індекс шкільних розкладів уроків'),
-  );
+module.exports = function Header({ dirs, disableLast }) {
+  return h('header', CurrentDirectory({ dirs, disableLast }));
 };

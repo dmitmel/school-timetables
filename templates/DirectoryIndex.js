@@ -2,7 +2,6 @@ const h = require('./hyperscript');
 const Layout = require('./Layout');
 const Header = require('./components/Header');
 const Footer = require('./components/Footer');
-const CurrentDirectory = require('./components/CurrentDirectory');
 
 module.exports = function DirectoryIndex({ relativeRoot, dirNames, contents }) {
   return Layout({
@@ -15,10 +14,9 @@ module.exports = function DirectoryIndex({ relativeRoot, dirNames, contents }) {
       }),
     ],
     body: [
-      Header(),
+      Header({ dirs: dirNames, disableLast: true }),
       h(
         'main',
-        CurrentDirectory({ dirs: dirNames, disableLast: true }),
         h(
           'ul',
           { class: 'DirectoryIndex' },
