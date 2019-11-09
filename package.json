@@ -20,7 +20,7 @@
     "prestart": "yarn run build",
     "start": "http-server rendered",
     "dev": "nodemon --ext '*' --watch data --watch static --watch styles --watch templates --exec 'yarn start'",
-    "build": "node render.js",
+    "build": "node build.js",
     "lint": "eslint --ignore-path .gitignore ."
   }
 }
