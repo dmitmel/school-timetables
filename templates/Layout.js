@@ -1,6 +1,5 @@
 const h = require('./hyperscript');
-
-const TITLE = 'Індекс шкільних розкладів уроків';
+const metadata = require('./metadata');
 
 module.exports = function Layout({ relativeRoot, titleSuffix, head, body }) {
   return h(
@@ -13,7 +12,7 @@ module.exports = function Layout({ relativeRoot, titleSuffix, head, body }) {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1.0',
       }),
-      h('title', `${TITLE}${titleSuffix}`),
+      h('title', `${metadata.TITLE}${titleSuffix}`),
       h('link', {
         rel: 'stylesheet',
         href:
@@ -40,5 +39,3 @@ module.exports = function Layout({ relativeRoot, titleSuffix, head, body }) {
     h('body', body),
   );
 };
-
-module.exports.TITLE = TITLE;
