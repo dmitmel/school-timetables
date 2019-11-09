@@ -5,7 +5,6 @@ const path = require('path');
 const chalk = require('chalk').default;
 const sass = require('node-sass');
 const materialColors = require('material-colors');
-const htmlMinifier = require('html-minifier');
 const JSON5 = require('json5');
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
@@ -160,15 +159,6 @@ function renderTemplate({ name, renderedName, context }) {
   });
 
   let text = `<!DOCTYPE html>${renderedDom.outerHTML}`;
-
-  text = htmlMinifier.minify(text, {
-    collapseWhitespace: true,
-    removeComments: true,
-    removeRedundantAttributes: true,
-    removeScriptTypeAttributes: true,
-    removeStyleLinkTypeAttributes: true,
-    useShortDoctype: true,
-  });
 
   fs.writeFileSync(path.join(RENDERED_FILES_DIR, renderedName), text);
 }
