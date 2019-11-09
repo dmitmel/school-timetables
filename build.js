@@ -11,6 +11,7 @@ const JSON5 = require('json5');
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const STYLESHEETS_DIR = path.join(__dirname, 'styles');
 const DATA_FILES_DIR = path.join(__dirname, 'data');
+const SCHOOL_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'schools');
 const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
 const STATIC_FILES_DIR = path.join(__dirname, 'static');
 const RENDERED_FILES_DIR = path.join(__dirname, 'rendered');
@@ -82,17 +83,31 @@ let palette = flattenObj(materialColors);
 
 console.log('loading lesson colors file');
 let lessonColors = readJsonSync(
-  path.join(DATA_FILES_DIR, 'lesson-colors.json5'),
+  path.join(DATA_FILES_DIR, 'lessonColors.json5'),
 );
 Object.keys(lessonColors).forEach(lessonName => {
   let [back, fore] = lessonColors[lessonName];
   lessonColors[lessonName] = [palette[back], palette[fore]];
 });
 
-console.log('loading lesson times file');
-let lessonTimes = readJsonSync(
-  path.join(DATA_FILES_DIR, 'lesson-times', 'Basis.json5'),
-);
+logSection('Loading school data files');
+let schools = {};
+if (fs.existsSync(SCHOOL_DATA_FILES_DIR)) {
+  walkSync(SCHOOL_DATA_FILES_DIR, (parentDirNames, _dirNames, fileNames) => {
+    fileNames.forEach(name => {
+      let extName = path.extname(name);
+      if (extName === '.json5') {
+        let baseName = path.basename(name, extName);
+        let relativePath = path.join(...parentDirNames, name);
+        let fullPath = path.join(SCHOOL_DATA_FILES_DIR, relativePath);
+        console.log(`loading '${relativePath}'`);
+        let data = readJsonSync(fullPath);
+        let key = [...parentDirNames, baseName].join('/');
+        schools[key] = data;
+      }
+    });
+  });
+}
 
 function compileScss({ name, compiledName }) {
   console.log(`compiling stylesheet '${name}' to '${compiledName}'`);
@@ -174,7 +189,7 @@ if (fs.existsSync(LESSON_DATA_FILES_DIR)) {
         let baseName = path.basename(name, extName);
         let relativePath = path.join(relativeDirPath, name);
         console.log(`generating timetable from '${relativePath}'`);
-        let lessons = readJsonSync(
+        let { school, lessons } = readJsonSync(
           path.join(LESSON_DATA_FILES_DIR, relativePath),
         );
         renderTemplate({
@@ -184,7 +199,7 @@ if (fs.existsSync(LESSON_DATA_FILES_DIR)) {
             dirNames: parentDirNames,
             name: baseName,
             lessonColors,
-            lessonTimes,
+            lessonTimes: schools[school].lessonTimes,
             lessons,
           },
         });
