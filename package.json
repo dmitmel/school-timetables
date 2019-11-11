@@ -18,8 +18,7 @@
   "scripts": {
     "prestart": "yarn run build",
     "start": "http-server rendered",
-    "dev": "nodemon --ext '*' --watch data --watch static --watch styles --watch templates --exec 'yarn start'",
-    "build": "node build.js",
-    "lint": "eslint --ignore-path .gitignore ."
+    "dev": "nodemon --ext '*' --watch data --watch static --watch styles --watch templates --watch build.js --exec 'yarn start'",
+    "build": "node build.js"
   }
 }

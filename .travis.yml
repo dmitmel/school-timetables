@@ -9,7 +9,8 @@ cache:
 install:
   - yarn install
 script:
-  - yarn lint --cache --cache-location .eslintcache/
+  - eslint . --ignore-path .gitignore --cache --cache-location .eslintcache/
+  - prettier --check 'data/**/*.json5'
 
 jobs:
   include:
