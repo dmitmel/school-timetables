@@ -12,7 +12,7 @@ const STYLESHEETS_DIR = path.join(__dirname, 'styles');
 const DATA_FILES_DIR = path.join(__dirname, 'data');
 const SCHOOL_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'schools');
 const LESSON_DATA_FILES_DIR = path.join(DATA_FILES_DIR, 'lessons');
-const STATIC_FILES_DIR = path.join(__dirname, 'static');
+const ASSETS_DIR = path.join(__dirname, 'assets');
 const RENDERED_FILES_DIR = path.join(__dirname, 'rendered');
 
 function logSection(...args) {
@@ -35,30 +35,6 @@ function walkSync(dir, callback, parentDirNames = []) {
 function readJsonSync(file) {
   let content = fs.readFileSync(file);
   return JSON5.parse(content);
-}
-
-logSection('Preparing the directory for rendered files');
-fs.ensureDirSync(RENDERED_FILES_DIR);
-fs.emptyDirSync(RENDERED_FILES_DIR);
-
-logSection('Copying static files');
-if (fs.existsSync(STATIC_FILES_DIR)) {
-  walkSync(STATIC_FILES_DIR, (parentDirNames, dirNames, fileNames) => {
-    let relativeDirPath = path.join(...parentDirNames);
-
-    dirNames.forEach(name => {
-      fs.mkdirSync(path.join(RENDERED_FILES_DIR, relativeDirPath, name));
-    });
-
-    fileNames.forEach(name => {
-      let relativePath = path.join(relativeDirPath, name);
-      console.log(`copying '${relativePath}'`);
-      fs.copyFileSync(
-        path.join(STATIC_FILES_DIR, relativePath),
-        path.join(RENDERED_FILES_DIR, relativePath),
-      );
-    });
-  });
 }
 
 logSection('Loading global data files');
@@ -104,6 +80,30 @@ if (fs.existsSync(SCHOOL_DATA_FILES_DIR)) {
         let key = [...parentDirNames, baseName].join('/');
         schools[key] = data;
       }
+    });
+  });
+}
+
+logSection('Preparing the directory for rendered files');
+fs.ensureDirSync(RENDERED_FILES_DIR);
+fs.emptyDirSync(RENDERED_FILES_DIR);
+
+logSection('Copying assets');
+if (fs.existsSync(ASSETS_DIR)) {
+  walkSync(ASSETS_DIR, (parentDirNames, dirNames, fileNames) => {
+    let relativeDirPath = path.join(...parentDirNames);
+
+    dirNames.forEach(name => {
+      fs.mkdirSync(path.join(RENDERED_FILES_DIR, relativeDirPath, name));
+    });
+
+    fileNames.forEach(name => {
+      let relativePath = path.join(relativeDirPath, name);
+      console.log(`copying '${relativePath}'`);
+      fs.copyFileSync(
+        path.join(ASSETS_DIR, relativePath),
+        path.join(RENDERED_FILES_DIR, relativePath),
+      );
     });
   });
 }
