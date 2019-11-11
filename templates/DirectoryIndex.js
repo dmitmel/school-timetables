@@ -36,8 +36,10 @@ module.exports = function DirectoryIndex({ relativeRoot, dirNames, contents }) {
               )
             : null,
           contents
-            .sort(({ name: a }, { name: b }) =>
-              a.localeCompare(b, 'uk-UA', { numeric: true }),
+            .sort(
+              (a, b) =>
+                Number(b.isDir) - Number(a.isDir) ||
+                a.name.localeCompare(b.name, 'uk-UA', { numeric: true }),
             )
             .map(({ isDir, name }) =>
               h(
