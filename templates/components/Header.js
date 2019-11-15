@@ -10,7 +10,7 @@ module.exports = function Header({ dirs, disableLast }) {
       { id: 'title' },
       metadata.TITLE,
       ' ',
-      h('small', 'v', metadata.VERSION),
+      h('span', { id: 'version' }, 'v', metadata.VERSION),
     ),
     CurrentDirectory({ dirs, disableLast }),
   );
