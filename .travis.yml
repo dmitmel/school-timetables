@@ -10,7 +10,7 @@ install:
   - yarn install
 script:
   - eslint . --ignore-path .gitignore --cache --cache-location .eslintcache/
-  - prettier --check 'data/**/*.json5'
+  - prettier --check 'styles/**/*.scss' 'data/**/*.json5'
 
 jobs:
   include:
