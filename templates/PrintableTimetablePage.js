@@ -26,7 +26,7 @@ module.exports = function PrintableTimetablePage({
       h(
         'main',
         Timetable({
-          title: name,
+          title: [...dirNames, name].join('/'),
           lessonTimes,
           lessons,
           lessonColors,
