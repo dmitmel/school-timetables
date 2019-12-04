@@ -4,7 +4,7 @@ const metadata = require('./metadata');
 module.exports = function Layout({ relativeRoot, titleSuffix, head, body }) {
   return h(
     'html',
-    { lang: 'en' },
+    { lang: 'uk-UA' },
     h(
       'head',
       h('meta', { charset: 'UTF-8' }),
