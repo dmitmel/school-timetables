@@ -11,9 +11,9 @@
   "devDependencies": {
     "eslint": "^6.6.0",
     "eslint-config-dmitmel": "dmitmel/eslint-config-dmitmel",
-    "eslint-plugin-node": "^10.0.0",
-    "http-server": "^0.11.1",
-    "nodemon": "^1.19.4"
+    "eslint-plugin-node": "^11.0.0",
+    "http-server": "^0.12.1",
+    "nodemon": "^2.0.2"
   },
   "scripts": {
     "prestart": "yarn run build",
