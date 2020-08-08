@@ -22,12 +22,12 @@ function logSection(...args) {
 function walkSync(dir, callback, parentDirNames = []) {
   let dirs = [];
   let notDirs = [];
-  fs.readdirSync(dir).forEach(name => {
+  fs.readdirSync(dir).forEach((name) => {
     let stats = fs.lstatSync(path.join(dir, name));
     (stats.isDirectory() ? dirs : notDirs).push(name);
   });
   callback(parentDirNames, dirs, notDirs);
-  dirs.forEach(subdir =>
+  dirs.forEach((subdir) =>
     walkSync(path.join(dir, subdir), callback, [...parentDirNames, subdir]),
   );
 }
@@ -60,7 +60,7 @@ console.log('loading lesson colors file');
 let lessonColors = readJsonSync(
   path.join(DATA_FILES_DIR, 'lessonColors.json5'),
 );
-Object.keys(lessonColors).forEach(lessonName => {
+Object.keys(lessonColors).forEach((lessonName) => {
   let [back, fore] = lessonColors[lessonName];
   lessonColors[lessonName] = [palette[back], palette[fore]];
 });
@@ -69,7 +69,7 @@ logSection('Loading school data files');
 let schools = {};
 if (fs.existsSync(SCHOOL_DATA_FILES_DIR)) {
   walkSync(SCHOOL_DATA_FILES_DIR, (parentDirNames, _dirNames, fileNames) => {
-    fileNames.forEach(name => {
+    fileNames.forEach((name) => {
       let extName = path.extname(name);
       if (extName === '.json5') {
         let baseName = path.basename(name, extName);
@@ -93,11 +93,11 @@ if (fs.existsSync(ASSETS_DIR)) {
   walkSync(ASSETS_DIR, (parentDirNames, dirNames, fileNames) => {
     let relativeDirPath = path.join(...parentDirNames);
 
-    dirNames.forEach(name => {
+    dirNames.forEach((name) => {
       fs.mkdirSync(path.join(RENDERED_FILES_DIR, relativeDirPath, name));
     });
 
-    fileNames.forEach(name => {
+    fileNames.forEach((name) => {
       let relativePath = path.join(relativeDirPath, name);
       console.log(`copying '${relativePath}'`);
       fs.copyFileSync(
@@ -128,11 +128,11 @@ if (fs.existsSync(STYLESHEETS_DIR)) {
   walkSync(STYLESHEETS_DIR, (parentDirNames, dirNames, fileNames) => {
     let relativeDirPath = path.join(...parentDirNames);
 
-    dirNames.forEach(name => {
+    dirNames.forEach((name) => {
       fs.mkdirSync(path.join(RENDERED_FILES_DIR, relativeDirPath, name));
     });
 
-    fileNames.forEach(name => {
+    fileNames.forEach((name) => {
       let extName = path.extname(name);
       if (extName === '.scss') {
         let baseName = path.basename(name, extName);
@@ -151,7 +151,6 @@ logSection('Rendering lesson data files');
 function renderTemplate({ name, renderedName, context }) {
   console.log(`rendering template '${name}' to '${renderedName}'`);
 
-  // eslint-disable-next-line global-require
   let templateFunction = require(path.join(TEMPLATES_DIR, name));
   let renderedDom = templateFunction({
     relativeRoot: path.relative(path.dirname(renderedName), '.') || '.',
@@ -168,12 +167,12 @@ if (fs.existsSync(LESSON_DATA_FILES_DIR)) {
     let relativeDirPath = path.join(...parentDirNames);
     let contents = [];
 
-    dirNames.forEach(name => {
+    dirNames.forEach((name) => {
       fs.mkdirSync(path.join(RENDERED_FILES_DIR, relativeDirPath, name));
       contents.push({ isDir: true, name });
     });
 
-    fileNames.forEach(name => {
+    fileNames.forEach((name) => {
       let extName = path.extname(name);
       if (extName === '.json5') {
         let baseName = path.basename(name, extName);

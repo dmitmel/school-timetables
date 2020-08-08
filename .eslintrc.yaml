@@ -1,4 +1,6 @@
-extends: eslint-config-dmitmel/presets/node
+extends:
+  - eslint-config-dmitmel/presets/node
+  - eslint-config-dmitmel/presets/formatting
 rules:
   node/shebang: off
 overrides:

@@ -6,7 +6,7 @@ const Footer = require('./components/Footer');
 module.exports = function DirectoryIndex({ relativeRoot, dirNames, contents }) {
   return Layout({
     relativeRoot,
-    titleSuffix: dirNames.map(s => `/${s}`).join(''),
+    titleSuffix: dirNames.map((s) => `/${s}`).join(''),
     head: [
       h('link', {
         rel: 'stylesheet',

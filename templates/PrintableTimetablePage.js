@@ -11,7 +11,7 @@ module.exports = function PrintableTimetablePage({
   lessons,
   lessonColors,
 }) {
-  let pathOnWebsite = [...dirNames, name].map(s => `/${s}`).join('');
+  let pathOnWebsite = [...dirNames, name].map((s) => `/${s}`).join('');
   let footerUrl = `${metadata.WEBSITE_URL}${pathOnWebsite}.html`;
   return Layout({
     relativeRoot,

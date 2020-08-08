@@ -14,7 +14,7 @@ module.exports = function TimetablePage({
 }) {
   return Layout({
     relativeRoot,
-    titleSuffix: [...dirNames, name].map(s => `/${s}`).join(''),
+    titleSuffix: [...dirNames, name].map((s) => `/${s}`).join(''),
     head: [
       h('link', {
         rel: 'stylesheet',

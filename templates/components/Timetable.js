@@ -21,7 +21,7 @@ module.exports = function Timetable({
         'tr',
         h('th', 'Дзвінки'),
         h('th', 'Урок'),
-        WEEKDAYS.map(weekday => h('th', weekday)),
+        WEEKDAYS.map((weekday) => h('th', weekday)),
       ),
     ),
     h(

@@ -4,10 +4,7 @@
 class Node {}
 
 function escapeHtml(s) {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function escapeHtmlAttribute(s) {
@@ -49,12 +46,12 @@ class Element extends Node {
   }
 
   get innerHTML() {
-    return this.childNodes.map(e => e.outerHTML || e.textContent).join('');
+    return this.childNodes.map((e) => e.outerHTML || e.textContent).join('');
   }
 
   get outerHTML() {
     let attrsStr = Object.keys(this.attributes)
-      .map(name => {
+      .map((name) => {
         let value = this.attributes[name];
         return ` ${name}="${escapeHtmlAttribute(String(value))}"`;
       })
@@ -92,7 +89,7 @@ module.exports = function h(tagName, ...args) {
     } else if (item instanceof Node) {
       element.appendChild(item);
     } else if (typeof item === 'object') {
-      Object.keys(item).forEach(attrName => {
+      Object.keys(item).forEach((attrName) => {
         let attrValue = item[attrName];
         element.setAttribute(attrName, attrValue);
       });
