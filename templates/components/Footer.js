@@ -16,9 +16,7 @@ module.exports = function Footer() {
       h(
         'a',
         {
-          href: `mailto:${metadata.AUTHOR_EMAIL}?subject=${encodeURIComponent(
-            metadata.TITLE,
-          )}`,
+          href: `mailto:${metadata.AUTHOR_EMAIL}?subject=${encodeURIComponent(metadata.TITLE)}`,
         },
         metadata.AUTHOR_EMAIL,
       ),

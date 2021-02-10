@@ -27,9 +27,7 @@ function walkSync(dir, callback, parentDirNames = []) {
     (stats.isDirectory() ? dirs : notDirs).push(name);
   });
   callback(parentDirNames, dirs, notDirs);
-  dirs.forEach((subdir) =>
-    walkSync(path.join(dir, subdir), callback, [...parentDirNames, subdir]),
-  );
+  dirs.forEach((subdir) => walkSync(path.join(dir, subdir), callback, [...parentDirNames, subdir]));
 }
 
 function readJsonSync(file) {
@@ -57,9 +55,7 @@ console.log('generating color palette');
 let palette = flattenObj(materialColors);
 
 console.log('loading lesson colors file');
-let lessonColors = readJsonSync(
-  path.join(DATA_FILES_DIR, 'lessonColors.json5'),
-);
+let lessonColors = readJsonSync(path.join(DATA_FILES_DIR, 'lessonColors.json5'));
 Object.keys(lessonColors).forEach((lessonName) => {
   let [back, fore] = lessonColors[lessonName];
   lessonColors[lessonName] = [palette[back], palette[fore]];
@@ -177,9 +173,7 @@ if (fs.existsSync(LESSON_DATA_FILES_DIR)) {
       if (extName === '.json5') {
         let baseName = path.basename(name, extName);
         let relativePath = path.join(relativeDirPath, name);
-        let { school, lessons } = readJsonSync(
-          path.join(LESSON_DATA_FILES_DIR, relativePath),
-        );
+        let { school, lessons } = readJsonSync(path.join(LESSON_DATA_FILES_DIR, relativePath));
 
         console.log(`generating timetable from '${relativePath}'`);
         let context = {
@@ -215,3 +209,5 @@ if (fs.existsSync(LESSON_DATA_FILES_DIR)) {
     });
   });
 }
+
+logSection('Done!');

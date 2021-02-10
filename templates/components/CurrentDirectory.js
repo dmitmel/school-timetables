@@ -17,11 +17,7 @@ module.exports = function CurrentDirectory({ dirs, disableLast = false }) {
         h(
           'li',
           !disableLast || index + 1 < elements.length
-            ? h(
-                'a',
-                { href: `.${'/..'.repeat(elements.length - index - 1)}/` },
-                element,
-              )
+            ? h('a', { href: `.${'/..'.repeat(elements.length - index - 1)}/` }, element)
             : h('span', element),
         ),
       ),

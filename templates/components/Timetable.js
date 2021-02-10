@@ -4,13 +4,7 @@ const { sprintf } = require('sprintf-js');
 const WEEKDAYS = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', "П'ятниця"];
 const TOTAL_COLUMNS = WEEKDAYS.length + 2;
 
-module.exports = function Timetable({
-  title,
-  lessonTimes,
-  lessons,
-  lessonColors,
-  footer = null,
-}) {
+module.exports = function Timetable({ title, lessonTimes, lessons, lessonColors, footer = null }) {
   return h(
     'table',
     { class: 'Timetable' },
@@ -37,17 +31,13 @@ module.exports = function Timetable({
             let color = lessonColors[lesson];
             return h(
               'td',
-              color != null
-                ? { style: `background-color: ${color[0]}; color: ${color[1]}` }
-                : null,
+              color != null ? { style: `background-color: ${color[0]}; color: ${color[1]}` } : null,
               lesson,
             );
           }),
         ),
       ),
     ),
-    footer != null
-      ? h('tfoot', h('tr', h('td', { colspan: TOTAL_COLUMNS }, footer)))
-      : null,
+    footer != null ? h('tfoot', h('tr', h('td', { colspan: TOTAL_COLUMNS }, footer))) : null,
   );
 };

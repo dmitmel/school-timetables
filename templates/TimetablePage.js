@@ -35,14 +35,7 @@ module.exports = function TimetablePage({
             lessonColors,
           }),
         ),
-        h(
-          'p',
-          h(
-            'a',
-            { href: `./${name}.print.html` },
-            'Версія цієї таблиці для друку',
-          ),
-        ),
+        h('p', h('a', { href: `./${name}.print.html` }, 'Версія цієї таблиці для друку')),
       ),
       Footer(),
     ],
