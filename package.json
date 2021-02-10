@@ -25,6 +25,7 @@
     "start": "http-server rendered",
     "dev": "nodemon --ext '*' --watch data --watch static --watch styles --watch templates --watch build.js --exec 'yarn start'",
     "build": "node build.js",
-    "lint": "eslint . --ignore-path .gitignore"
+    "lint": "eslint . --ignore-path .gitignore",
+    "check-fmt": "prettier --check 'styles/**/*.scss' 'data/**/*.json5'"
   }
 }
