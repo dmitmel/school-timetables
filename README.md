@@ -1,6 +1,6 @@
 # school-timetables
 
-[![Build Status](https://travis-ci.com/dmitmel/school-timetables.svg?branch=master)](https://travis-ci.com/dmitmel/school-timetables)
+[![CI/CD Status](https://github.com/dmitmel/school-timetables/workflows/CI/CD/badge.svg)](https://github.com/dmitmel/school-timetables/actions?query=workflow:CI/CD)
 
 ## Idea
 
