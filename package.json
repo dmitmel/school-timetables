@@ -8,8 +8,8 @@
     "fs-extra": "^9.0.0",
     "json5": "^2.1.1",
     "material-colors": "^1.2.6",
-    "node-sass": "^5.0.0",
-    "sprintf-js": "^1.1.2"
+    "sprintf-js": "^1.1.2",
+    "sass": "^1.32.8"
   },
   "devDependencies": {
     "eslint": "^7.6.0",

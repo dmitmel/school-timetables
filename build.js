@@ -3,7 +3,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
-const sass = require('node-sass');
+const sass = require('sass');
 const materialColors = require('material-colors');
 const JSON5 = require('json5');
 
