@@ -1,0 +1,3 @@
+body>main{padding:0}body>main>*:not(#TimetableWrapper){padding:0 1em}#TimetableWrapper{overflow:auto}table.Timetable{display:inline-table;margin:0 1em}table.Timetable{table-layout:fixed;border-collapse:collapse;text-align:center;color:#000}table.Timetable,table.Timetable td,table.Timetable th{border:1px solid #212121}table.Timetable td,table.Timetable th{padding:.4em .8em}table.Timetable thead,table.Timetable tfoot{background-color:#424242;color:#fff}table.Timetable thead a,table.Timetable tfoot a{color:#b3e5fc}table.Timetable .title{background-color:#212121;font-size:1.5em}
+
+/*# sourceMappingURL=TimetablePage.css.map */
